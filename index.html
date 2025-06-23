@@ -1,0 +1,3323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jamalbacus</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 10px;
+      text-align: center;
+    }
+    /* Header */
+    header {
+      margin-bottom: 10px;
+    }
+    header h1 {
+      font-size: 1.75rem;
+      margin: 0;
+      color: #333;
+    }
+    header p {
+      font-size: 0.8rem;
+      margin: 4px 0 0;
+      color: #666;
+    }
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      transition: box-shadow 0.3s ease;
+    }
+    .container:hover {
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    }
+    /* Lesson Save Form */
+    #lessonForm {
+      margin-bottom: 20px;
+      text-align: center;
+      display: flex; /* Use flexbox for button layout */
+      align-items: center;
+      justify-content: center;
+      gap: 10px; /* Space between elements */
+    }
+    #lessonForm label {
+      font-size: 0.9rem;
+      margin-right: 5px;
+    }
+    #lessonForm input[type="date"] {
+      padding: 4px 6px;
+      font-size: 0.9rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.2s ease;
+    }
+    #lessonForm input[type="date"]:focus {
+      border-color: #4caf50;
+      outline: none;
+    }
+    #lessonForm button {
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 4px;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    #lessonForm button:hover {
+      background-color: #43a047;
+      transform: scale(1.03);
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      table-layout: fixed;
+    }
+    th, td {
+      padding: 8px;
+      text-align: center;
+      border: 1px solid #ddd;
+      vertical-align: middle;
+      font-size: 0.85rem;
+      transition: background-color 0.2s ease;
+    }
+    th {
+      background-color: #4caf50;
+      color: white;
+      border-radius: 4px;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    /* Make Student Name column interactive */
+    #pointsTable tbody tr td:first-child {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    #pointsTable tbody tr td:first-child:hover {
+      transform: scale(1.1);
+    }
+    /* Custom Input & Checkbox Styles */
+    input[type="text"].custom-text,
+    input[type="number"].custom-input {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 4px 6px;
+      transition: border-color 0.2s ease;
+    }
+    input[type="text"].custom-text:focus,
+    input[type="number"].custom-input:focus {
+      border-color: #4caf50;
+      outline: none;
+    }
+    input[type="checkbox"].custom-checkbox {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      border: 2px solid #4caf50;
+      border-radius: 4px;
+      background: #fff;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    input[type="checkbox"].custom-checkbox:checked {
+      background: #4caf50;
+    }
+    input[type="checkbox"].custom-checkbox:checked::after {
+      content: '✓';
+      color: #fff;
+      font-size: 16px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    input[type="checkbox"].custom-checkbox:hover {
+      transform: scale(1.1);
+    }
+    /* Per-Cell Customization Controls */
+    .cell-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .cell-customizer {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      margin-top: 2px;
+    }
+    .cell-customizer button {
+      padding: 2px 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      border: none;
+      background-color: #e0e0e0;
+      border-radius: 4px;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .cell-customizer button:hover {
+      background-color: #d5d5d5;
+      transform: scale(1.05);
+    }
+    .cell-value-input {
+      width: 35px;
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 2px;
+    }
+    /* NUMBER ACTIVITY Column Redesign */
+    .numact-cell {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      min-width: 320px;
+    }
+    .numact-text {
+      width: 140px;
+      font-size: 0.8rem;
+      padding: 2px;
+    }
+    .numact-number-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      align-items: center;
+    }
+    /* Abacus Display Styles (if needed) */
+    .abacus-display {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .abacus-column {
+      position: relative;
+      width: 50px;
+      height: 250px;
+      background-color: #f8f0e3;
+      border: 2px solid black;
+      border-radius: 8px;
+      margin: 4px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease;
+    }
+    .abacus-rod {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      height: 100%;
+      width: 2px;
+      background-color: black;
+      z-index: 1;
+    }
+    .abacus-upper {
+      position: relative;
+      height: 60px;
+      border-bottom: 2px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      z-index: 2;
+    }
+    .abacus-bead.upper-bead {
+      width: 20px;
+      height: 20px;
+      background-color: #c68642;
+      border: 1px solid black;
+      position: absolute;
+      left: 50%;
+      transform-origin: center;
+      transition: transform 0.3s ease;
+      z-index: 3;
+    }
+    .abacus-bead.upper-bead.inactive {
+      transform: translate(-50%, 0px) rotate(45deg);
+    }
+    .abacus-bead.upper-bead.active {
+      transform: translate(-50%, 12px) rotate(45deg);
+    }
+    .abacus-lower {
+      height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      z-index: 2;
+    }
+    .lower-bead-container {
+      position: relative;
+      height: 30px;
+      width: 100%;
+    }
+    .abacus-bead.lower-bead {
+      width: 20px;
+      height: 20px;
+      background-color: #c68642;
+      border: 1px solid black;
+      position: absolute;
+      left: 50%;
+      transform-origin: center;
+      transition: transform 0.3s ease;
+      z-index: 3;
+    }
+    .abacus-bead.lower-bead.inactive {
+      transform: translate(-50%, 12px) rotate(45deg);
+    }
+    .abacus-bead.lower-bead.active {
+      transform: translate(-50%, -7px) rotate(45deg);
+    }
+    /* Global Update Panel */
+    #globalUpdateContainer { /* New container for both panels */
+        display: flex;
+        justify-content: space-around; /* Distribute space */
+        gap: 20px; /* Space between panels */
+        margin-top: 15px;
+        flex-wrap: wrap; /* Allow panels to wrap on smaller screens */
+    }
+    #globalUpdatePanel, #studentStatusPanel, #shareLoadPanel { /* Added shareLoadPanel */
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fefefe;
+      text-align: center;
+      transition: background-color 0.3s ease;
+      flex: 1; /* Allow panels to grow and shrink */
+      min-width: 300px; /* Minimum width for each panel */
+    }
+    #globalUpdatePanel h3, #studentStatusPanel h3, #shareLoadPanel h3 { /* Added shareLoadPanel */
+      margin-top: 0;
+      font-size: 1.1rem;
+    }
+    .global-control, .student-status-item {
+      margin: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      justify-content: center;
+    }
+    .global-control label, .student-status-item span {
+      width: 140px;
+      text-align: right;
+      font-size: 0.85rem;
+    }
+    .global-control input {
+      width: 45px;
+      font-size: 0.85rem;
+      padding: 2px;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.2s ease;
+    }
+    .global-control input:focus {
+      border-color: #4caf50;
+      outline: none;
+    }
+    .global-control button, .student-status-item button, #shareLoadPanel button { /* Added shareLoadPanel button */
+      padding: 2px 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #4caf50;
+      color: white;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .global-control button:hover, .student-status-item button:hover, #shareLoadPanel button:hover { /* Added shareLoadPanel button */
+      background-color: #43a047;
+      transform: scale(1.03);
+    }
+    /* Styles for absent rows */
+    .absent-row {
+        opacity: 0.5; /* Grey out the row */
+        pointer-events: none; /* Disable clicks/interactions on children */
+        background-color: #e0e0e0 !important; /* Ensure consistent grey background */
+    }
+    /* Specific override for the Absent button in the status panel so it remains clickable */
+    #studentStatusPanel .student-status-item button {
+        pointer-events: auto; /* Re-enable for the button itself */
+    }
+    /* Style for absent button when student is absent */
+    .student-status-item button.absent {
+        background-color: #e53935; /* Red for Absent */
+    }
+    .student-status-item button.absent:hover {
+        background-color: #d32f2f;
+    }
+
+    /* Lesson Tabs */
+    #lessonTabs {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .lesson-tab {
+      display: inline-block;
+      padding: 6px 10px;
+      margin: 0 5px;
+      border: 1px solid #4caf50;
+      border-radius: 44px; /* More rounded for tabs */
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: #4caf50;
+      transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+    }
+    .lesson-tab:hover {
+      transform: scale(1.05);
+      background-color: #e8f5e9; /* Light green hover */
+    }
+    .lesson-tab.active {
+      background-color: #4caf50;
+      color: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    /* Clear All Saves Button */
+    #clearSaves {
+      margin-top: 10px;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      background-color: #e53935;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    #clearSaves:hover {
+      background-color: #d32f2f;
+      transform: scale(1.03);
+    }
+    /* --- Report Modal Styles --- */
+    #reportModal, #messageModal, #confirmModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.3s ease;
+    }
+    #reportModal.show, #messageModal.show, #confirmModal.show {
+      display: flex;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90%;
+      overflow-y: auto;
+      position: relative;
+      transition: transform 0.3s ease;
+      text-align: center; /* Center content for message/confirm modals */
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #e53935;
+      border: none;
+      color: white;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .close-btn:hover {
+      background: #d32f2f;
+    }
+    .report-table, .ranking-table { /* Added ranking-table */
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      table-layout: fixed;
+    }
+    .report-table th, .report-table td, .ranking-table th, .ranking-table td { /* Added ranking-table */
+      border: 1px solid #eee; /* Lighter border for report/ranking tables */
+      padding: 8px;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+    .report-table th, .ranking-table th { /* Added ranking-table */
+      background-color: #f5f5f5; /* Lighter background for report/ranking headers */
+      font-weight: bold;
+    }
+    .report-table tbody tr:nth-child(odd), .ranking-table tbody tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+    .report-table tbody tr:nth-child(even), .ranking-table tbody tr:nth-child(even) {
+        background-color: #fcfcfc;
+    }
+    .modal-buttons {
+      margin-top: 20px;
+    }
+    .modal-buttons button {
+      padding: 8px 15px;
+      margin: 0 5px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .modal-buttons button.confirm-yes {
+      background-color: #4caf50;
+      color: white;
+    }
+    .modal-buttons button.confirm-yes:hover {
+      background-color: #43a047;
+      transform: scale(1.03);
+    }
+    .modal-buttons button.confirm-no {
+      background-color: #ccc;
+      color: #333;
+    }
+    .modal-buttons button.confirm-no:hover {
+      background-color: #bbb;
+      transform: scale(1.03);
+    }
+    .modal-buttons button.message-ok {
+        background-color: #4caf50;
+        color: white;
+    }
+    .modal-buttons button.message-ok:hover {
+        background-color: #43a047;
+        transform: scale(1.03);
+    }
+
+    #shareLoadPanel textarea {
+        width: calc(100% - 20px);
+        min-height: 80px;
+        padding: 8px;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.85rem;
+        resize: vertical;
+    }
+    #shareLoadPanel .button-group {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+    #shareLoadPanel .button-group button {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+
+    /* Main content and Ranking page toggle */
+    #mainContent {
+        display: block; /* Initially visible */
+    }
+
+    /* New/Updated Ranking Page Styles */
+    #rankingPage {
+        display: none; /* Initially hidden */
+        padding: 30px; /* Increased padding */
+        border-radius: 16px; /* More rounded corners */
+        background-color: #ffffff;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* More prominent shadow */
+        max-width: 800px; 
+        margin: 30px auto; /* Increased margin */
+        text-align: center;
+        animation: fadeIn 0.5s ease-out; /* Fade-in animation */
+    }
+    #rankingPage h2 {
+        font-size: 1.8rem; /* Larger heading */
+        color: #333;
+        margin-bottom: 25px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.05); /* Subtle text shadow */
+    }
+    #rankingPage .ranking-controls {
+        margin-bottom: 30px; /* More space below controls */
+        display: flex;
+        justify-content: center;
+        gap: 15px; /* Increased space between buttons */
+        flex-wrap: wrap;
+    }
+    #rankingPage .ranking-controls button {
+        padding: 10px 20px; /* Larger buttons */
+        font-size: 1rem; /* Larger font */
+        border: none;
+        border-radius: 8px; /* More rounded buttons */
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Button shadow */
+        transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    #rankingPage .ranking-controls button:hover {
+        background-color: #43a047;
+        transform: translateY(-2px) scale(1.02); /* Lift and grow slightly */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    #rankingPage .ranking-controls button.back-button {
+        background-color: #607d8b; /* Blue-grey for back button */
+    }
+    #rankingPage .ranking-controls button.back-button:hover {
+        background-color: #546e7a;
+    }
+    #rankingPage #rankingResults {
+        text-align: left;
+        background-color: #fdfdfd; /* Slightly different background for results area */
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: inset 0 1px 5px rgba(0,0,0,0.05); /* Inner shadow for depth */
+    }
+    #rankingPage #rankingResults h3 {
+        margin-top: 0;
+        color: #555;
+        font-size: 1.3rem;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    .ranking-table {
+        border: none; /* Remove outer table border for cleaner look */
+    }
+    .ranking-table th {
+        background-color: #e0f2f1; /* Light teal for ranking table headers */
+        color: #333;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #b2dfdb; /* Stronger bottom border */
+    }
+    .ranking-table td {
+        border-bottom: 1px solid #f0f0f0; /* Lighter borders between rows */
+        padding: 10px 8px; /* More padding */
+        font-size: 0.9rem;
+    }
+    .ranking-table tbody tr:last-child td {
+        border-bottom: none; /* No border for the last row */
+    }
+    .ranking-table tbody tr:hover {
+        background-color: #e8f5e9; /* Light green hover for rows */
+    }
+
+    /* Animation for fade-in */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Jamalbacus.</h1>
+    <p>UCMAS x Rohind ©</p>
+  </header>
+
+  <div id="mainContent" class="container">
+    <form id="lessonForm">
+      <button type="button" onclick="setTuesday()">Tuesday</button>
+      
+      <label for="lessonDate">Lesson Date:</label>
+      <input type="date" id="lessonDate" required />
+      <button type="submit">Save Lesson</button>
+
+      <button type="button" onclick="setSaturday()">Saturday</button>
+
+      <button type="button" onclick="openRankingPage()">Ranking</button>
+    </form>
+    
+    <table id="pointsTable">
+      <colgroup>
+        <col style="width: 150px;">
+        <col style="width: 100px;">
+        <col style="width: 100px;">
+        <col style="width: 100px;">
+        <col style="width: 100px;">
+        <col style="width: 400px;">
+        <col style="width: 100px;">
+        <col style="width: 100px;">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>ARRIVAL</th>
+          <th>HOMEWORK</th>
+          <th>CLASSWORK</th>
+          <th>LISTENING CALCULATION</th>
+          <th>NUMBER ACTIVITY</th>
+          <th>BEHAVIOUR</th>
+          <th>Final Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        </tbody>
+    </table>
+    
+    <div id="globalUpdateContainer">
+        <div id="globalUpdatePanel">
+            <h3>Change for All Rows</h3>
+            <div class="global-control">
+                <label for="global-col-0">ARRIVAL:</label>
+                <input type="number" id="global-col-0" value="5" />
+                <button onclick="applyGlobalUpdate(0)">Apply</button>
+            </div>
+            <div class="global-control">
+                <label for="global-col-1">HOMEWORK:</label>
+                <input type="number" id="global-col-1" value="5" />
+                <button onclick="applyGlobalUpdate(1)">Apply</button>
+            </div>
+            <div class="global-control">
+                <label for="global-col-2">CLASSWORK:</label>
+                <input type="number" id="global-col-2" value="5" />
+                <button onclick="applyGlobalUpdate(2)">Apply</button>
+            </div>
+            <div class="global-control">
+                <label for="global-col-3">LISTENING CALCULATION:</label>
+                <input type="number" id="global-col-3" value="5" />
+                <button onclick="applyGlobalUpdate(3)">Apply</button>
+            </div>
+            <div class="global-control">
+                <label for="global-col-4">NUMBER ACTIVITY:</label>
+                <input type="number" id="global-col-4" value="5" />
+                <button onclick="applyGlobalUpdate(4)">Apply</button>
+            </div>
+            <div class="global-control">
+                <label for="global-col-5">BEHAVIOUR:</label>
+                <input type="number" id="global-col-5" value="-5" />
+                <button onclick="applyGlobalUpdate(5)">Apply</button>
+            </div>
+        </div>
+
+        <div id="studentStatusPanel">
+            <h3>Student Status</h3>
+            </div>
+    </div>
+
+    <div id="shareLoadPanel">
+        <h3>Share & Load Data</h3>
+        <textarea id="shareCodeTextarea" placeholder="Generated code will appear here, or paste code to load..."></textarea>
+        <div class="button-group">
+            <button onclick="generateShareCode()">Generate Code</button>
+            <button onclick="copyShareCode()">Copy Code</button>
+            <button onclick="loadFromShareCode()">Load from Code</button>
+        </div>
+    </div>
+    
+    <div id="lessonTabs"></div>
+    
+    <button id="clearSaves" onclick="clearAllSaves()">Clear All Saves</button>
+  </div>
+  
+  <div id="rankingPage">
+    <h2>Student Rankings</h2>
+    <div class="ranking-controls">
+      <button onclick="displayRanking('Saturday')">Saturday Class Ranking</button>
+      <button onclick="displayRanking('Tuesday')">Tuesday Class Ranking</button>
+      <button class="back-button" onclick="closeRankingPage()">Back to Home</button>
+    </div>
+    <div id="rankingResults">
+      <p>Select a class to view rankings.</p>
+      </div>
+  </div>
+
+
+  <div id="reportModal">
+    <div class="modal-content" id="reportContent">
+      <button class="close-btn" onclick="closeReport()">×</button>
+      </div>
+  </div>
+
+  <div id="messageModal">
+    <div class="modal-content">
+      <h2 id="messageTitle"></h2>
+      <p id="messageText"></p>
+      <div class="modal-buttons">
+        <button class="message-ok" onclick="closeMessage()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmModal">
+    <div class="modal-content">
+      <h2 id="confirmTitle"></h2>
+      <p id="confirmText"></p>
+      <div class="modal-buttons">
+        <button class="confirm-yes" id="confirmYes">Yes</button>
+        <button class="confirm-no" id="confirmNo">No</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Global default points mapping (Indices: 0=ARRIVAL, 1=HOMEWORK, 2=CLASSWORK, 3=LISTENING CALCULATION, 4=NUMBER ACTIVITY, 5=BEHAVIOUR)
+    let defaultPointsMapping = [5, 5, 5, 5, 5, -5];
+    
+    // Fixed student lists for different days
+    const defaultStudents = ["Min", "Joanne", "Adhav", "Hevin"];
+    const tuesdayStudents = ["Min", "Joanne", "Adhav", "Hevin", "Nila", "Tara", "Yaseen"];
+    const saturdayStudents = ["Dhriti", "Indu", "Adhav", "Ashwika", "Marium", "Jesicca", "Anglea", "Marianna"];
+
+    // This will hold the currently displayed student list and their absent status
+    let currentStudentsData = []; // Array of { name: "StudentName", isAbsent: false }
+
+    // Helper to get the current day of the week (0-Sunday, 1-Monday, ..., 6-Saturday)
+    function getDayOfWeek(dateString) {
+        const dateObj = new Date(dateString + 'T00:00:00'); // Add 'T00:00:00' for consistent local time interpretation
+        return dateObj.getDay();
+    }
+
+    // Initialize currentStudentsData based on a provided student list
+    function initializeCurrentStudentsData(studentNames) {
+        currentStudentsData = studentNames.map(name => ({ name: name, isAbsent: false }));
+    }
+
+    // Updates the main points table based on currentStudentsData
+    function updateTable() {
+      const tbody = document.querySelector("#pointsTable tbody");
+      tbody.innerHTML = "";
+      
+      currentStudentsData.forEach(studentData => {
+        const studentName = studentData.name;
+        const tr = document.createElement("tr");
+        tr.dataset.studentName = studentName; // Add data attribute for easy lookup
+        
+        // Apply absent class if student is marked absent
+        if (studentData.isAbsent) {
+            tr.classList.add('absent-row');
+        }
+
+        // Student Name cell with hover and click event for report.
+        const nameTd = document.createElement("td");
+        nameTd.textContent = studentName;
+        nameTd.addEventListener("click", function() {
+          openReport(this);
+        });
+        tr.appendChild(nameTd);
+        
+        // Create cells for scoring columns (indices 0 to 5)
+        defaultPointsMapping.forEach((defaultVal, index) => {
+          const td = document.createElement("td");
+          const cellContainer = document.createElement("div");
+          cellContainer.className = "cell-container";
+          
+          if (index === 4) { // NUMBER ACTIVITY column
+            const horizontalContainer = document.createElement("div");
+            horizontalContainer.className = "numact-cell";
+            
+            // Left: free text input.
+            const textInput = document.createElement("input");
+            textInput.type = "text";
+            textInput.className = "numact-text custom-text";
+            textInput.placeholder = "Text";
+            textInput.disabled = studentData.isAbsent; // Disable if absent
+            horizontalContainer.appendChild(textInput);
+            
+            // Right: vertical container for numeric controls.
+            const numericContainer = document.createElement("div");
+            numericContainer.className = "numact-number-container";
+            
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.classList.add("custom-checkbox");
+            checkbox.dataset.points = defaultVal;
+            checkbox.dataset.index = index;
+            checkbox.onchange = function() { recalcRow(this.closest("tr")); };
+            checkbox.disabled = studentData.isAbsent; // Disable if absent
+            numericContainer.appendChild(checkbox);
+            
+            const customizer = document.createElement("div");
+            customizer.className = "cell-customizer";
+            
+            const minusBtn = document.createElement("button");
+            minusBtn.type = "button";
+            minusBtn.textContent = "−";
+            minusBtn.onclick = function() { decrementCell(this); };
+            minusBtn.disabled = studentData.isAbsent; // Disable if absent
+            
+            const cellValueInput = document.createElement("input");
+            cellValueInput.type = "number";
+            cellValueInput.className = "cell-value-input custom-input";
+            cellValueInput.value = defaultVal;
+            cellValueInput.onchange = function() {
+              const newVal = parseInt(this.value, 10);
+              checkbox.dataset.points = newVal;
+              recalcAll();
+            };
+            cellValueInput.disabled = studentData.isAbsent; // Disable if absent
+            
+            const plusBtn = document.createElement("button");
+            plusBtn.type = "button";
+            plusBtn.textContent = "+";
+            plusBtn.onclick = function() { incrementCell(this); };
+            plusBtn.disabled = studentData.isAbsent; // Disable if absent
+            
+            customizer.appendChild(minusBtn);
+            customizer.appendChild(cellValueInput);
+            customizer.appendChild(plusBtn);
+            numericContainer.appendChild(customizer);
+            horizontalContainer.appendChild(numericContainer);
+            cellContainer.appendChild(horizontalContainer);
+          } else {
+            // For other columns: standard layout.
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.classList.add("custom-checkbox");
+            checkbox.dataset.points = defaultVal;
+            checkbox.dataset.index = index;
+            checkbox.onchange = function() { recalcRow(this.closest("tr")); };
+            checkbox.disabled = studentData.isAbsent; // Disable if absent
+            cellContainer.appendChild(checkbox);
+            
+            const customizer = document.createElement("div");
+            customizer.className = "cell-customizer";
+            
+            const minusBtn = document.createElement("button");
+            minusBtn.type = "button";
+            minusBtn.textContent = "−";
+            minusBtn.onclick = function() { decrementCell(this); };
+            minusBtn.disabled = studentData.isAbsent; // Disable if absent
+            
+            const cellValueInput = document.createElement("input");
+            cellValueInput.type = "number";
+            cellValueInput.className = "cell-value-input custom-input";
+            cellValueInput.value = defaultVal;
+            cellValueInput.onchange = function() {
+              const newVal = parseInt(this.value, 10);
+              checkbox.dataset.points = newVal;
+              recalcAll();
+            };
+            cellValueInput.disabled = studentData.isAbsent; // Disable if absent
+            
+            const plusBtn = document.createElement("button");
+            plusBtn.type = "button";
+            plusBtn.textContent = "+";
+            plusBtn.onclick = function() { incrementCell(this); };
+            plusBtn.disabled = studentData.isAbsent; // Disable if absent
+            
+            customizer.appendChild(minusBtn);
+            customizer.appendChild(cellValueInput);
+            customizer.appendChild(plusBtn);
+            cellContainer.appendChild(customizer);
+          }
+          td.appendChild(cellContainer);
+          tr.appendChild(td);
+        });
+        
+        // Final Score cell.
+        const scoreTd = document.createElement("td");
+        scoreTd.className = "final-score";
+        scoreTd.textContent = studentData.isAbsent ? "0" : "0"; // Set to 0 if absent initially
+        tr.appendChild(scoreTd);
+        
+        tbody.appendChild(tr);
+      });
+      updateStudentStatusPanel(); // Also update the new status panel
+    }
+    
+    // Updates the Student Status Panel
+    function updateStudentStatusPanel() {
+        const panel = document.getElementById('studentStatusPanel');
+        panel.innerHTML = '<h3>Student Status</h3>'; // Reset title
+
+        currentStudentsData.forEach(student => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'student-status-item';
+
+            const studentNameSpan = document.createElement('span');
+            studentNameSpan.textContent = student.name;
+            itemDiv.appendChild(studentNameSpan);
+
+            const absentButton = document.createElement('button');
+            absentButton.textContent = student.isAbsent ? 'Present' : 'Absent';
+            absentButton.classList.toggle('absent', student.isAbsent); // Add 'absent' class if student is absent
+            absentButton.onclick = () => toggleAbsent(student.name); // Call toggle function
+
+            itemDiv.appendChild(absentButton);
+            panel.appendChild(itemDiv);
+        });
+    }
+
+    // Toggles the absent status for a student
+    function toggleAbsent(studentName) {
+        const studentIndex = currentStudentsData.findIndex(s => s.name === studentName);
+        if (studentIndex === -1) return;
+
+        currentStudentsData[studentIndex].isAbsent = !currentStudentsData[studentIndex].isAbsent;
+        
+        const tr = document.querySelector(`tr[data-student-name="${studentName}"]`);
+        if (tr) {
+            tr.classList.toggle('absent-row', currentStudentsData[studentIndex].isAbsent);
+            
+            // Enable/Disable inputs and checkboxes in the row
+            const inputs = tr.querySelectorAll('input');
+            const buttons = tr.querySelectorAll('button');
+            inputs.forEach(input => input.disabled = currentStudentsData[studentIndex].isAbsent);
+            buttons.forEach(button => button.disabled = currentStudentsData[studentIndex].isAbsent);
+
+            // If marking absent, uncheck all and set score to 0
+            if (currentStudentsData[studentIndex].isAbsent) {
+                const checkboxes = tr.querySelectorAll("input[type='checkbox']");
+                checkboxes.forEach(chk => chk.checked = false); // Uncheck all
+                updateFinalScoreCell(tr, 0); // Set final score to 0
+            } else {
+                recalcRow(tr); // Recalculate if becoming present
+            }
+        }
+        updateStudentStatusPanel(); // Update the button text in the status panel
+    }
+    
+    // Recalculate a row's final score.
+    function recalcRow(trOrElement) {
+      const tr = (trOrElement.tagName === "TR") ? trOrElement : trOrElement.closest("tr");
+      const studentName = tr.dataset.studentName;
+      const studentData = currentStudentsData.find(s => s.name === studentName);
+
+      if (studentData && studentData.isAbsent) {
+          updateFinalScoreCell(tr, 0); // If absent, score is 0
+          return;
+      }
+
+      let score = 0;
+      const checkboxes = tr.querySelectorAll("input[type='checkbox']");
+      checkboxes.forEach(chk => {
+        if (chk.checked) {
+          score += parseInt(chk.dataset.points, 10);
+        }
+      });
+      updateFinalScoreCell(tr, score);
+    }
+    
+    // Update final score cell.
+    function updateFinalScoreCell(tr, score) {
+      const scoreTd = tr.querySelector(".final-score");
+      scoreTd.textContent = score;
+    }
+    
+    function recalcAll() {
+      const rows = document.querySelectorAll("#pointsTable tbody tr");
+      rows.forEach(tr => recalcRow(tr));
+    }
+    
+    function incrementCell(button) {
+      const container = button.parentElement.parentElement;
+      const checkbox = container.querySelector("input[type='checkbox']");
+      let currentVal = parseInt(checkbox.dataset.points, 10);
+      currentVal++;
+      checkbox.dataset.points = currentVal;
+      const inputField = container.querySelector("input.cell-value-input");
+      if (inputField) { inputField.value = currentVal; }
+      recalcAll();
+    }
+    
+    function decrementCell(button) {
+      const container = button.parentElement.parentElement;
+      const checkbox = container.querySelector("input[type='checkbox']");
+      let currentVal = parseInt(checkbox.dataset.points, 10);
+      currentVal--;
+      checkbox.dataset.points = currentVal;
+      const inputField = container.querySelector("input.cell-value-input");
+      if (inputField) { inputField.value = currentVal; }
+      recalcAll();
+    }
+    
+    function drawAbacus(score) {
+      // (Optional: For abacus display mode – not currently used)
+      const container = document.createElement("div");
+      container.className = "abacus-display";
+      if (score < 0) {
+        const minus = document.createElement("span");
+        minus.textContent = "-";
+        minus.style.fontSize = "2rem";
+        minus.style.marginRight = "5px";
+        container.appendChild(minus);
+      }
+      const absScore = Math.abs(score);
+      let digits = absScore.toString();
+      if (digits === "") { digits = "0"; }
+      for (const char of digits) {
+        const digit = parseInt(char, 10);
+        container.appendChild(createAbacusColumn(digit));
+      }
+      return container;
+    }
+    
+    function createAbacusColumn(digit) {
+      const column = document.createElement("div");
+      column.className = "abacus-column";
+      const rod = document.createElement("div");
+      rod.className = "abacus-rod";
+      column.appendChild(rod);
+      const upper = document.createElement("div");
+      upper.className = "abacus-upper";
+      const upperBead = document.createElement("div");
+      upperBead.className = "abacus-bead upper-bead";
+      if (digit >= 5) {
+        upperBead.classList.add("active");
+      } else {
+        upperBead.classList.add("inactive");
+      }
+      upper.appendChild(upperBead);
+      column.appendChild(upper);
+      const lower = document.createElement("div");
+      lower.className = "abacus-lower";
+      const lowerActive = (digit >= 5) ? digit - 5 : digit;
+      for (let i = 0; i < 4; i++) {
+        const containerDiv = document.createElement("div");
+        containerDiv.className = "lower-bead-container";
+        const lowerBead = document.createElement("div");
+        lowerBead.className = "abacus-bead lower-bead";
+        if (i < lowerActive) {
+          lowerBead.classList.add("active");
+        } else {
+          lowerBead.classList.add("inactive");
+        }
+        containerDiv.appendChild(lowerBead);
+        lower.appendChild(containerDiv);
+      }
+      column.appendChild(lower);
+      return column;
+    }
+    
+    // ---- Report Modal Functions ----
+    function openReport(nameCell) {
+      // Get the row of the clicked student name.
+      const tr = nameCell.parentElement;
+      const studentName = nameCell.textContent;
+      const studentData = currentStudentsData.find(s => s.name === studentName);
+      
+      // Get current lesson date (or "unspecified" if not set)
+      let lessonDate = document.getElementById("lessonDate").value;
+      if (!lessonDate) {
+        lessonDate = "Unspecified";
+      }
+      
+      let reportHtml = `<h2>Report for ${studentName}</h2>`;
+      reportHtml += `<p>Lesson Date: ${lessonDate}</p>`;
+
+      if (studentData && studentData.isAbsent) {
+          reportHtml += `<p style="font-weight: bold; color: #e53935; font-size: 1.2rem;">Absent</p>`;
+      } else {
+          reportHtml += `<table class="report-table"><thead><tr>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Value</th>
+                            <th>Notes</th>
+                            </tr></thead><tbody>`;
+          // Define the column names for data cells (indices 0 to 5 for our scoring data).
+          const columns = ["ARRIVAL", "HOMEWORK", "CLASSWORK", "LISTENING CALCULATION", "NUMBER ACTIVITY", "BEHAVIOUR"];
+          
+          // Loop through cells 1 to 6 of the row.
+          for (let i = 1; i <= 6; i++) {
+            const cell = tr.cells[i];
+            let status = "", value = "", notes = "";
+            if (i === 5) {
+              // NUMBER ACTIVITY column: retrieve text, checkbox, and numeric value.
+              const textInput = cell.querySelector("input.numact-text") || { value: "" };
+              const numericContainer = cell.querySelector("div.numact-number-container");
+              const checkbox = numericContainer ? numericContainer.querySelector("input[type='checkbox']") : { checked: false };
+              const cellValueInput = numericContainer ? numericContainer.querySelector("input.cell-value-input") : { value: "" };
+              status = checkbox.checked ? "Checked" : "Unchecked";
+              value = cellValueInput.value;
+              notes = textInput.value;
+            } else {
+              // Other columns: retrieve checkbox and value.
+              const checkbox = cell.querySelector("input[type='checkbox']");
+              const cellValueInput = cell.querySelector("input.cell-value-input");
+              status = checkbox && checkbox.checked ? "Checked" : "Unchecked";
+              value = cellValueInput ? cellValueInput.value : "";
+              notes = "";
+            }
+            reportHtml += `<tr>
+                              <td>${columns[i-1]}</td>
+                              <td>${status}</td>
+                              <td>${value}</td>
+                            <td>${notes}</td>
+                            </tr>`;
+          }
+          reportHtml += `</tbody></table>`;
+      }
+      
+      // Insert the report HTML into the modal.
+      document.getElementById("reportContent").innerHTML = `<button class="close-btn" onclick="closeReport()">×</button>` + reportHtml;
+      
+      // Show the modal.
+      document.getElementById("reportModal").classList.add("show");
+    }
+    
+    function closeReport() {
+      document.getElementById("reportModal").classList.remove("show");
+    }
+
+    // ---- Custom Message Modal Functions (replaces alert) ----
+    let messageCallback = null; // Callback for when message modal is closed
+
+    function showMessage(title, message, callback = null) {
+      document.getElementById("messageTitle").textContent = title;
+      document.getElementById("messageText").textContent = message;
+      messageCallback = callback; // Store the callback
+      document.getElementById("messageModal").classList.add("show");
+    }
+
+    function closeMessage() {
+      document.getElementById("messageModal").classList.remove("show");
+      if (messageCallback) {
+        messageCallback(); // Execute callback if it exists
+        messageCallback = null; // Clear the callback
+      }
+    }
+
+    // ---- Custom Confirmation Modal Functions (replaces confirm) ----
+    let confirmResolver = null; // Resolver for the confirmation Promise
+
+    function showConfirm(title, message) {
+      return new Promise((resolve) => {
+        document.getElementById("confirmTitle").textContent = title;
+        document.getElementById("confirmText").textContent = message;
+        document.getElementById("confirmModal").classList.add("show");
+        confirmResolver = resolve;
+
+        // Event listeners for Yes/No buttons
+        document.getElementById("confirmYes").onclick = () => {
+          document.getElementById("confirmModal").classList.remove("show");
+          confirmResolver(true);
+          confirmResolver = null;
+        };
+        document.getElementById("confirmNo").onclick = () => {
+          document.getElementById("confirmModal").classList.remove("show");
+          confirmResolver(false);
+          confirmResolver = null;
+        };
+      });
+    }
+    
+    // ---- Lesson Saving System ----
+    function getLessonDataForSave() { // Renamed to avoid confusion with getLessonData for share code
+      const data = [];
+      const rows = document.querySelectorAll("#pointsTable tbody tr");
+      rows.forEach(tr => {
+        const studentName = tr.cells[0].textContent;
+        const studentRecord = currentStudentsData.find(s => s.name === studentName);
+        const isAbsent = studentRecord ? studentRecord.isAbsent : false;
+
+        const rowData = { student: studentName, cells: [], isAbsent: isAbsent }; // Added isAbsent
+        
+        // Save data from cells 1 to 6.
+        for (let col = 1; col <= 6; col++) {
+          const cell = tr.cells[col];
+          let cellData = {};
+          if (col === 5) {  // NUMBER ACTIVITY column
+            const textInput = cell.querySelector("input.numact-text");
+            const numericContainer = cell.querySelector("div.numact-number-container");
+            const checkbox = numericContainer.querySelector("input[type='checkbox']");
+            const valueInput = numericContainer.querySelector("input.cell-value-input");
+            cellData = {
+              text: textInput.value,
+              checkbox: checkbox.checked,
+              value: parseInt(valueInput.value, 10)
+            };
+          } else {
+            const checkbox = cell.querySelector("input[type='checkbox']");
+            const valueInput = cell.querySelector("input.cell-value-input");
+            cellData = {
+              checkbox: checkbox.checked,
+              value: parseInt(valueInput.value, 10)
+            };
+          }
+          rowData.cells.push(cellData);
+        }
+        // Calculate the current row's final score directly from the table
+        const scoreTd = tr.querySelector(".final-score");
+        rowData.finalScore = parseInt(scoreTd.textContent, 10); // Store final score for ranking
+        data.push(rowData);
+      });
+      // Store the names of the students currently in the table, to reconstruct on load
+      const studentNamesOnly = currentStudentsData.map(s => s.name); 
+      return { students: studentNamesOnly, rows: data }; // Store student names and their data
+    }
+    
+    async function saveLesson(event) {
+      event.preventDefault();
+      const lessonDate = document.getElementById("lessonDate").value;
+      if (!lessonDate) {
+        showMessage("Error", "Please select a lesson date.");
+        return;
+      }
+      const lessonData = getLessonDataForSave(); 
+      const lesson = { date: lessonDate, studentList: lessonData.students, rows: lessonData.rows };
+
+      let lessons = JSON.parse(localStorage.getItem("lessons")) || [];
+      const existingIndex = lessons.findIndex(l => l.date === lessonDate);
+      if (existingIndex >= 0) {
+        lessons[existingIndex] = lesson;
+      } else {
+        lessons.push(lesson);
+      }
+      localStorage.setItem("lessons", JSON.stringify(lessons));
+      updateLessonTabs();
+      showMessage("Success", "Lesson saved!");
+    }
+    
+    document.getElementById("lessonForm").addEventListener("submit", saveLesson);
+    
+    // When the lesson date changes, load the lesson if it exists; otherwise update based on day of week.
+    document.getElementById("lessonDate").addEventListener("change", function() {
+      const lessonDate = this.value; 
+      if (!lessonDate) {
+        // If date is cleared, revert to default students
+        initializeCurrentStudentsData(defaultStudents);
+        updateTable();
+        recalcAll();
+        updateLessonTabs(); // Clear active tab
+        return;
+      }
+
+      let lessons = JSON.parse(localStorage.getItem("lessons")) || [];
+      const existingLesson = lessons.find(l => l.date === lessonDate);
+
+      if (existingLesson) {
+        loadLesson(existingLesson); // Load the found lesson object
+      } else {
+        // No saved lesson for this date, so determine students based on day of week
+        const dayOfWeek = getDayOfWeek(lessonDate); 
+
+        let newStudentNames = [...defaultStudents];
+        let message = "Switched to default student list for this day.";
+
+        if (dayOfWeek === 2) { // Tuesday
+          newStudentNames = [...tuesdayStudents];
+          message = "Automatically switched to Tuesday student list.";
+        } else if (dayOfWeek === 6) { // Saturday
+          newStudentNames = [...saturdayStudents];
+          message = "Automatically switched to Saturday student list.";
+        } 
+        
+        initializeCurrentStudentsData(newStudentNames); // Reset student data for the new day
+        updateTable(); // Rebuild the table with the determined student list
+        recalcAll(); // Recalculate scores for the new table
+        updateLessonTabs(); // Update tabs, remove any active tab since it's a new date without save
+        showMessage("Student List Updated", message);
+      }
+    });
+    
+    function updateLessonTabs() {
+      const lessonTabsDiv = document.getElementById("lessonTabs");
+      lessonTabsDiv.innerHTML = "";
+      let lessons = JSON.parse(localStorage.getItem("lessons")) || [];
+      // Sort lessons by date in descending order (most recent first)
+      lessons.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      lessons.forEach((lesson) => { // No need for index 'i' here
+        const tab = document.createElement("div");
+        tab.className = "lesson-tab";
+        tab.textContent = lesson.date;
+        tab.onclick = function() { loadLesson(lesson); }; // Pass the full lesson object
+        lessonTabsDiv.appendChild(tab);
+      });
+      // Set the active tab if a date is currently selected in the input
+      const currentSelectedDate = document.getElementById("lessonDate").value;
+      if (currentSelectedDate) {
+        const tabs = document.getElementsByClassName("lesson-tab");
+        Array.from(tabs).forEach(tab => {
+          if (tab.textContent === currentSelectedDate) {
+            tab.classList.add("active");
+          } else {
+            tab.classList.remove("active");
+          }
+        });
+      }
+    }
+    
+    // Centralized function to load a lesson state (from localStorage or share code)
+    function loadLesson(lesson) {
+      if (!lesson || !lesson.date || !lesson.studentList || !lesson.rows) {
+        showMessage("Error", "Invalid lesson data provided.");
+        return;
+      }
+
+      // Re-initialize currentStudentsData from the provided lesson's studentList
+      currentStudentsData = lesson.studentList.map(name => {
+          const savedStudentData = lesson.rows.find(row => row.student === name);
+          return {
+              name: name,
+              isAbsent: savedStudentData ? savedStudentData.isAbsent : false
+          };
+      });
+
+      updateTable(); // Rebuild the table with the correct student list and initial absent states
+      // Set the date input to the loaded lesson's date
+      document.getElementById("lessonDate").value = lesson.date;
+
+      // Now populate the specific cell data and apply absent status
+      lesson.rows.forEach((rowData) => { 
+        const studentRow = document.querySelector(`tr[data-student-name="${rowData.student}"]`);
+        
+        if(studentRow){ 
+          // Re-apply absent status and related UI changes
+          const studentRecord = currentStudentsData.find(s => s.name === rowData.student);
+          if (studentRecord && rowData.isAbsent) {
+              // Ensure the row is marked absent and inputs disabled/unchecked if it wasn't already from updateTable
+              studentRow.classList.add('absent-row');
+              const inputs = studentRow.querySelectorAll('input');
+              const buttons = studentRow.querySelectorAll('button');
+              inputs.forEach(input => input.disabled = true);
+              buttons.forEach(button => button.disabled = true);
+              const checkboxes = studentRow.querySelectorAll("input[type='checkbox']");
+              checkboxes.forEach(chk => chk.checked = false); // Uncheck all
+              updateFinalScoreCell(studentRow, 0); // Set final score to 0
+          } else {
+              // Only load cell data if not absent (or if being marked present)
+              rowData.cells.forEach((cellData, j) => {
+                const cell = studentRow.cells[j+1]; 
+                if (j === 4) {  // NUMBER ACTIVITY column
+                  const textInput = cell.querySelector("input.numact-text");
+                  const numericContainer = cell.querySelector("div.numact-number-container");
+                  const checkbox = numericContainer.querySelector("input[type='checkbox']");
+                  const valueInput = numericContainer.querySelector("input.cell-value-input");
+                  if (textInput) textInput.value = cellData.text;
+                  if (checkbox) {
+                      checkbox.checked = cellData.checkbox;
+                      checkbox.dataset.points = cellData.value;
+                  }
+                  if (valueInput) valueInput.value = cellData.value;
+                } else {
+                  const checkbox = cell.querySelector("input[type='checkbox']");
+                  const valueInput = cell.querySelector("input.cell-value-input");
+                  if (checkbox) {
+                      checkbox.checked = cellData.checkbox;
+                      checkbox.dataset.points = cellData.value;
+                  }
+                  if (valueInput) valueInput.value = cellData.value;
+                }
+              });
+              recalcRow(studentRow); // Recalculate score for this specific row
+          }
+        }
+      });
+      updateStudentStatusPanel(); // Ensure student status panel is also updated
+      // Update active tab status
+      const tabs = document.getElementsByClassName("lesson-tab");
+      Array.from(tabs).forEach(tab => {
+        if (tab.textContent === lesson.date) {
+          tab.classList.add("active");
+        } else {
+          tab.classList.remove("active");
+        }
+      });
+    }
+
+    // Function to set Tuesday students (called by manual button click)
+    function setTuesday() {
+      initializeCurrentStudentsData(tuesdayStudents); 
+      updateTable(); 
+      recalcAll(); 
+      document.getElementById("lessonDate").value = ""; 
+      updateLessonTabs(); 
+      showMessage("Student List Updated", "Manually switched to Tuesday student list.");
+    }
+
+    // Function to set Saturday students (called by manual button click)
+    function setSaturday() {
+      initializeCurrentStudentsData(saturdayStudents); 
+      updateTable(); 
+      recalcAll(); 
+      document.getElementById("lessonDate").value = ""; 
+      updateLessonTabs(); 
+      showMessage("Student List Updated", "Manually switched to Saturday student list.");
+    }
+    
+    async function clearAllSaves() {
+      const confirmed = await showConfirm("Confirm Deletion", "Are you sure you want to clear all saved lessons? This action cannot be undone.");
+      if (confirmed) {
+        localStorage.removeItem("lessons");
+        updateLessonTabs();
+        initializeCurrentStudentsData(defaultStudents); 
+        updateTable(); 
+        recalcAll(); 
+        showMessage("Success", "All saved lessons cleared.");
+      } else {
+        showMessage("Cancelled", "Clear all saves action cancelled.");
+      }
+    }
+
+    // Function to apply global updates to all checkboxes in a specific column
+    function applyGlobalUpdate(colIndex) {
+      const globalValueInput = document.getElementById(`global-col-${colIndex}`);
+      const newValue = parseInt(globalValueInput.value, 10);
+      if (isNaN(newValue)) {
+        showMessage("Invalid Input", "Please enter a valid number for the global update.");
+        return;
+      }
+
+      const rows = document.querySelectorAll("#pointsTable tbody tr");
+      rows.forEach(tr => {
+        const studentName = tr.dataset.studentName;
+        const studentData = currentStudentsData.find(s => s.name === studentName);
+        
+        // Skip updating absent students
+        if (studentData && studentData.isAbsent) {
+            return; 
+        }
+
+        const targetCell = tr.cells[colIndex + 1];
+        let checkbox = null;
+        let valueInput = null;
+
+        if (colIndex === 4) { 
+          const numericContainer = targetCell.querySelector("div.numact-number-container");
+          if (numericContainer) {
+            checkbox = numericContainer.querySelector("input[type='checkbox']");
+            valueInput = numericContainer.querySelector("input.cell-value-input");
+          }
+        } else {
+          checkbox = targetCell.querySelector("input[type='checkbox']");
+          valueInput = targetCell.querySelector("input.cell-value-input");
+        }
+        
+        if (checkbox && valueInput) {
+          checkbox.dataset.points = newValue;
+          valueInput.value = newValue;
+        }
+      });
+      recalcAll(); 
+      showMessage("Update Applied", `Global update applied to column ${colIndex + 1}.`);
+    }
+
+    // New: Function to generate a shareable code
+    function generateShareCode() {
+        const lessonDate = document.getElementById("lessonDate").value;
+        if (!lessonDate) {
+            showMessage("Error", "Please select a lesson date before generating code.");
+            return;
+        }
+        const currentLessonState = getLessonDataForSave(); // Get the full current state
+        const fullState = { date: lessonDate, studentList: currentLessonState.students, rows: currentLessonState.rows };
+        
+        try {
+            const jsonString = JSON.stringify(fullState);
+            const encodedString = btoa(jsonString); // Base64 encode
+            const shareCodeTextarea = document.getElementById("shareCodeTextarea");
+            shareCodeTextarea.value = encodedString;
+            showMessage("Code Generated", "Shareable code generated successfully!");
+            shareCodeTextarea.focus(); // Focus the textarea
+            shareCodeTextarea.select(); // Select the text for easy copying
+        } catch (error) {
+            showMessage("Error", "Failed to generate code: " + error.message);
+            console.error("Generate code error:", error);
+        }
+    }
+
+    // New: Function to copy shareable code to clipboard
+    function copyShareCode() {
+        const shareCodeTextarea = document.getElementById("shareCodeTextarea");
+        if (shareCodeTextarea.value) {
+            shareCodeTextarea.select();
+            document.execCommand('copy');
+            showMessage("Copied!", "Code copied to clipboard.");
+        } else {
+            showMessage("No Code", "Generate a code first before attempting to copy.");
+        }
+    }
+
+    // New: Function to load from a shareable code
+    function loadFromShareCode() {
+        const encodedString = document.getElementById("shareCodeTextarea").value.trim();
+        if (!encodedString) {
+            showMessage("Error", "Please paste a code into the text area to load.");
+            return;
+        }
+
+        try {
+            const decodedString = atob(encodedString); // Base64 decode
+            const loadedLesson = JSON.parse(decodedString); // Parse JSON
+
+            if (!loadedLesson || !loadedLesson.date || !loadedLesson.studentList || !loadedLesson.rows) {
+                showMessage("Error", "Invalid code format. Please paste a valid generated code.");
+                return;
+            }
+
+            // Load the lesson using the central loadLesson function
+            loadLesson(loadedLesson);
+            showMessage("Success", `Lesson loaded from code for date: ${loadedLesson.date}.`);
+        } catch (error) {
+            showMessage("Error", "Failed to load code. Ensure it is a valid generated code. Error: " + error.message);
+            console.error("Load code error:", error);
+        }
+    }
+
+    // --- Ranking Page Functions ---
+    function openRankingPage() {
+        document.getElementById("mainContent").style.display = "none";
+        document.getElementById("rankingPage").style.display = "block";
+        document.getElementById("rankingResults").innerHTML = '<p>Select a class to view rankings.</p>'; // Clear previous results
+    }
+
+    function closeRankingPage() {
+        document.getElementById("mainContent").style.display = "block";
+        document.getElementById("rankingPage").style.display = "none";
+    }
+
+    function calculateRanking(classType) {
+        let allLessons = JSON.parse(localStorage.getItem("lessons")) || [];
+        let totalScores = {};
+
+        allLessons.forEach(lesson => {
+            const dayOfWeek = getDayOfWeek(lesson.date); // 0=Sun, 1=Mon, ..., 6=Sat
+
+            // Filter lessons by class type
+            if ((classType === 'Saturday' && dayOfWeek === 6) ||
+                (classType === 'Tuesday' && dayOfWeek === 2)) {
+                
+                lesson.rows.forEach(studentRow => {
+                    // Only count points for students who were present
+                    // Use the finalScore from the saved lesson data
+                    if (!studentRow.isAbsent && studentRow.finalScore !== undefined) { 
+                        const studentName = studentRow.student;
+                        const finalScore = studentRow.finalScore;
+                        
+                        if (totalScores[studentName]) {
+                            totalScores[studentName] += finalScore;
+                        } else {
+                            totalScores[studentName] = finalScore;
+                        }
+                    }
+                });
+            }
+        });
+
+        // Convert to an array of { student: name, totalPoints: score } objects
+        let ranking = Object.keys(totalScores).map(name => ({
+            student: name,
+            totalPoints: totalScores[name]
+        }));
+
+        // Sort by total points in descending order
+        ranking.sort((a, b) => b.totalPoints - a.totalPoints);
+
+        return ranking;
+    }
+
+    function displayRanking(classType) {
+        const rankingResultsDiv = document.getElementById("rankingResults");
+        const ranking = calculateRanking(classType);
+
+        let rankingHtml = `<h3>${classType} Class Ranking</h3>`;
+
+        if (ranking.length === 0) {
+            rankingHtml += `<p>No data available for ${classType} class rankings yet.</p>`;
+        } else {
+            rankingHtml += `<table class="ranking-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Student Name</th>
+                                        <th>Total Points</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+            ranking.forEach((entry, index) => {
+                rankingHtml += `<tr>
+                                    <td>${index + 1}</td>
+                                    <td>${entry.student}</td>
+                                    <td>${entry.totalPoints}</td>
+                                </tr>`;
+            });
+            rankingHtml += `</tbody></table>`;
+        }
+        rankingResultsDiv.innerHTML = rankingHtml;
+    }
+    
+    document.addEventListener("DOMContentLoaded", () => {
+      // Initialize with default students on page load
+      initializeCurrentStudentsData(defaultStudents);
+      updateTable(); 
+      updateLessonTabs();
+    });
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jamalbacus</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 10px;
+      text-align: center;
+    }
+    /* Header */
+    header {
+      margin-bottom: 10px;
+    }
+    header h1 {
+      font-size: 1.75rem;
+      margin: 0;
+      color: #333;
+    }
+    header p {
+      font-size: 0.8rem;
+      margin: 4px 0 0;
+      color: #666;
+    }
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      transition: box-shadow 0.3s ease;
+    }
+    .container:hover {
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    }
+    /* Lesson Save Form */
+    #lessonForm {
+      margin-bottom: 20px;
+      text-align: center;
+      display: flex; /* Use flexbox for button layout */
+      align-items: center;
+      justify-content: center;
+      gap: 10px; /* Space between elements */
+    }
+    #lessonForm label {
+      font-size: 0.9rem;
+      margin-right: 5px;
+    }
+    #lessonForm input[type="date"] {
+      padding: 4px 6px;
+      font-size: 0.9rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.2s ease;
+    }
+    #lessonForm input[type="date"]:focus {
+      border-color: #4caf50;
+      outline: none;
+    }
+    #lessonForm button {
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 4px;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    #lessonForm button:hover {
+      background-color: #43a047;
+      transform: scale(1.03);
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      table-layout: fixed;
+    }
+    th, td {
+      padding: 8px;
+      text-align: center;
+      border: 1px solid #ddd;
+      vertical-align: middle;
+      font-size: 0.85rem;
+      transition: background-color 0.2s ease;
+    }
+    th {
+      background-color: #4caf50;
+      color: white;
+      border-radius: 4px;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    /* Make Student Name column interactive */
+    #pointsTable tbody tr td:first-child {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    #pointsTable tbody tr td:first-child:hover {
+      transform: scale(1.1);
+    }
+    /* Custom Input & Checkbox Styles */
+    input[type="text"].custom-text,
+    input[type="number"].custom-input {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 4px 6px;
+      transition: border-color 0.2s ease;
+    }
+    input[type="text"].custom-text:focus,
+    input[type="number"].custom-input:focus {
+      border-color: #4caf50;
+      outline: none;
+    }
+    input[type="checkbox"].custom-checkbox {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      border: 2px solid #4caf50;
+      border-radius: 4px;
+      background: #fff;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    input[type="checkbox"].custom-checkbox:checked {
+      background: #4caf50;
+    }
+    input[type="checkbox"].custom-checkbox:checked::after {
+      content: '✓';
+      color: #fff;
+      font-size: 16px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    input[type="checkbox"].custom-checkbox:hover {
+      transform: scale(1.1);
+    }
+    /* Per-Cell Customization Controls */
+    .cell-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .cell-customizer {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      margin-top: 2px;
+    }
+    .cell-customizer button {
+      padding: 2px 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      border: none;
+      background-color: #e0e0e0;
+      border-radius: 4px;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .cell-customizer button:hover {
+      background-color: #d5d5d5;
+      transform: scale(1.05);
+    }
+    .cell-value-input {
+      width: 35px;
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 2px;
+    }
+    /* NUMBER ACTIVITY Column Redesign */
+    .numact-cell {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      min-width: 320px;
+    }
+    .numact-text {
+      width: 140px;
+      font-size: 0.8rem;
+      padding: 2px;
+    }
+    .numact-number-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      align-items: center;
+    }
+    /* Abacus Display Styles (if needed) */
+    .abacus-display {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .abacus-column {
+      position: relative;
+      width: 50px;
+      height: 250px;
+      background-color: #f8f0e3;
+      border: 2px solid black;
+      border-radius: 8px;
+      margin: 4px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease;
+    }
+    .abacus-rod {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      height: 100%;
+      width: 2px;
+      background-color: black;
+      z-index: 1;
+    }
+    .abacus-upper {
+      position: relative;
+      height: 60px;
+      border-bottom: 2px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      z-index: 2;
+    }
+    .abacus-bead.upper-bead {
+      width: 20px;
+      height: 20px;
+      background-color: #c68642;
+      border: 1px solid black;
+      position: absolute;
+      left: 50%;
+      transform-origin: center;
+      transition: transform 0.3s ease;
+      z-index: 3;
+    }
+    .abacus-bead.upper-bead.inactive {
+      transform: translate(-50%, 0px) rotate(45deg);
+    }
+    .abacus-bead.upper-bead.active {
+      transform: translate(-50%, 12px) rotate(45deg);
+    }
+    .abacus-lower {
+      height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      z-index: 2;
+    }
+    .lower-bead-container {
+      position: relative;
+      height: 30px;
+      width: 100%;
+    }
+    .abacus-bead.lower-bead {
+      width: 20px;
+      height: 20px;
+      background-color: #c68642;
+      border: 1px solid black;
+      position: absolute;
+      left: 50%;
+      transform-origin: center;
+      transition: transform 0.3s ease;
+      z-index: 3;
+    }
+    .abacus-bead.lower-bead.inactive {
+      transform: translate(-50%, 12px) rotate(45deg);
+    }
+    .abacus-bead.lower-bead.active {
+      transform: translate(-50%, -7px) rotate(45deg);
+    }
+    /* Global Update Panel */
+    #globalUpdateContainer { /* New container for both panels */
+        display: flex;
+        justify-content: space-around; /* Distribute space */
+        gap: 20px; /* Space between panels */
+        margin-top: 15px;
+        flex-wrap: wrap; /* Allow panels to wrap on smaller screens */
+    }
+    #globalUpdatePanel, #studentStatusPanel, #shareLoadPanel { /* Added shareLoadPanel */
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fefefe;
+      text-align: center;
+      transition: background-color 0.3s ease;
+      flex: 1; /* Allow panels to grow and shrink */
+      min-width: 300px; /* Minimum width for each panel */
+    }
+    #globalUpdatePanel h3, #studentStatusPanel h3, #shareLoadPanel h3 { /* Added shareLoadPanel */
+      margin-top: 0;
+      font-size: 1.1rem;
+    }
+    .global-control, .student-status-item {
+      margin: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      justify-content: center;
+    }
+    .global-control label, .student-status-item span {
+      width: 140px;
+      text-align: right;
+      font-size: 0.85rem;
+    }
+    .global-control input {
+      width: 45px;
+      font-size: 0.85rem;
+      padding: 2px;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.2s ease;
+    }
+    .global-control input:focus {
+      border-color: #4caf50;
+      outline: none;
+    }
+    .global-control button, .student-status-item button, #shareLoadPanel button { /* Added shareLoadPanel button */
+      padding: 2px 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #4caf50;
+      color: white;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .global-control button:hover, .student-status-item button:hover, #shareLoadPanel button:hover { /* Added shareLoadPanel button */
+      background-color: #43a047;
+      transform: scale(1.03);
+    }
+    /* Styles for absent rows */
+    .absent-row {
+        opacity: 0.5; /* Grey out the row */
+        pointer-events: none; /* Disable clicks/interactions on children */
+        background-color: #e0e0e0 !important; /* Ensure consistent grey background */
+    }
+    /* Specific override for the Absent button in the status panel so it remains clickable */
+    #studentStatusPanel .student-status-item button {
+        pointer-events: auto; /* Re-enable for the button itself */
+    }
+    /* Style for absent button when student is absent */
+    .student-status-item button.absent {
+        background-color: #e53935; /* Red for Absent */
+    }
+    .student-status-item button.absent:hover {
+        background-color: #d32f2f;
+    }
+
+    /* Lesson Tabs */
+    #lessonTabs {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .lesson-tab {
+      display: inline-block;
+      padding: 6px 10px;
+      margin: 0 5px;
+      border: 1px solid #4caf50;
+      border-radius: 44px; /* More rounded for tabs */
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: #4caf50;
+      transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+    }
+    .lesson-tab:hover {
+      transform: scale(1.05);
+      background-color: #e8f5e9; /* Light green hover */
+    }
+    .lesson-tab.active {
+      background-color: #4caf50;
+      color: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    /* Clear All Saves Button */
+    #clearSaves {
+      margin-top: 10px;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      background-color: #e53935;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    #clearSaves:hover {
+      background-color: #d32f2f;
+      transform: scale(1.03);
+    }
+    /* --- Report Modal Styles --- */
+    #reportModal, #messageModal, #confirmModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.3s ease;
+    }
+    #reportModal.show, #messageModal.show, #confirmModal.show {
+      display: flex;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90%;
+      overflow-y: auto;
+      position: relative;
+      transition: transform 0.3s ease;
+      text-align: center; /* Center content for message/confirm modals */
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #e53935;
+      border: none;
+      color: white;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .close-btn:hover {
+      background: #d32f2f;
+    }
+    .report-table, .ranking-table { /* Added ranking-table */
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      table-layout: fixed;
+    }
+    .report-table th, .report-table td, .ranking-table th, .ranking-table td { /* Added ranking-table */
+      border: 1px solid #eee; /* Lighter border for report/ranking tables */
+      padding: 8px;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+    .report-table th, .ranking-table th { /* Added ranking-table */
+      background-color: #f5f5f5; /* Lighter background for report/ranking headers */
+      font-weight: bold;
+    }
+    .report-table tbody tr:nth-child(odd), .ranking-table tbody tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+    .report-table tbody tr:nth-child(even), .ranking-table tbody tr:nth-child(even) {
+        background-color: #fcfcfc;
+    }
+    .modal-buttons {
+      margin-top: 20px;
+    }
+    .modal-buttons button {
+      padding: 8px 15px;
+      margin: 0 5px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .modal-buttons button.confirm-yes {
+      background-color: #4caf50;
+      color: white;
+    }
+    .modal-buttons button.confirm-yes:hover {
+      background-color: #43a047;
+      transform: scale(1.03);
+    }
+    .modal-buttons button.confirm-no {
+      background-color: #ccc;
+      color: #333;
+    }
+    .modal-buttons button.confirm-no:hover {
+      background-color: #bbb;
+      transform: scale(1.03);
+    }
+    .modal-buttons button.message-ok {
+        background-color: #4caf50;
+        color: white;
+    }
+    .modal-buttons button.message-ok:hover {
+        background-color: #43a047;
+        transform: scale(1.03);
+    }
+
+    #shareLoadPanel textarea {
+        width: calc(100% - 20px);
+        min-height: 80px;
+        padding: 8px;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.85rem;
+        resize: vertical;
+    }
+    #shareLoadPanel .button-group {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+    #shareLoadPanel .button-group button {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+
+    /* Main content and Ranking page toggle */
+    #mainContent {
+        display: block; /* Initially visible */
+    }
+
+    /* New/Updated Ranking Page Styles */
+    #rankingPage {
+        display: none; /* Initially hidden */
+        padding: 30px; /* Increased padding */
+        border-radius: 16px; /* More rounded corners */
+        background-color: #ffffff;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* More prominent shadow */
+        max-width: 800px; 
+        margin: 30px auto; /* Increased margin */
+        text-align: center;
+        animation: fadeIn 0.5s ease-out; /* Fade-in animation */
+    }
+    #rankingPage h2 {
+        font-size: 1.8rem; /* Larger heading */
+        color: #333;
+        margin-bottom: 25px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.05); /* Subtle text shadow */
+    }
+    #rankingPage .ranking-controls {
+        margin-bottom: 30px; /* More space below controls */
+        display: flex;
+        justify-content: center;
+        gap: 15px; /* Increased space between buttons */
+        flex-wrap: wrap;
+    }
+    #rankingPage .ranking-controls button {
+        padding: 10px 20px; /* Larger buttons */
+        font-size: 1rem; /* Larger font */
+        border: none;
+        border-radius: 8px; /* More rounded buttons */
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Button shadow */
+        transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    #rankingPage .ranking-controls button:hover {
+        background-color: #43a047;
+        transform: translateY(-2px) scale(1.02); /* Lift and grow slightly */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    #rankingPage .ranking-controls button.back-button {
+        background-color: #607d8b; /* Blue-grey for back button */
+    }
+    #rankingPage .ranking-controls button.back-button:hover {
+        background-color: #546e7a;
+    }
+    #rankingPage #rankingResults {
+        text-align: left;
+        background-color: #fdfdfd; /* Slightly different background for results area */
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: inset 0 1px 5px rgba(0,0,0,0.05); /* Inner shadow for depth */
+    }
+    #rankingPage #rankingResults h3 {
+        margin-top: 0;
+        color: #555;
+        font-size: 1.3rem;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    .ranking-table {
+        border: none; /* Remove outer table border for cleaner look */
+    }
+    .ranking-table th {
+        background-color: #e0f2f1; /* Light teal for ranking table headers */
+        color: #333;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #b2dfdb; /* Stronger bottom border */
+    }
+    .ranking-table td {
+        border-bottom: 1px solid #f0f0f0; /* Lighter borders between rows */
+        padding: 10px 8px; /* More padding */
+        font-size: 0.9rem;
+    }
+    .ranking-table tbody tr:last-child td {
+        border-bottom: none; /* No border for the last row */
+    }
+    .ranking-table tbody tr:hover {
+        background-color: #e8f5e9; /* Light green hover for rows */
+    }
+
+    /* Animation for fade-in */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Jamalbacus.</h1>
+    <p>UCMAS x Rohind ©</p>
+  </header>
+
+  <div id="mainContent" class="container">
+    <form id="lessonForm">
+      <button type="button" onclick="setTuesday()">Tuesday</button>
+      
+      <label for="lessonDate">Lesson Date:</label>
+      <input type="date" id="lessonDate" required />
+      <button type="submit">Save Lesson</button>
+
+      <button type="button" onclick="setSaturday()">Saturday</button>
+
+      <button type="button" onclick="openRankingPage()">Ranking</button>
+    </form>
+    
+    <table id="pointsTable">
+      <colgroup>
+        <col style="width: 150px;">
+        <col style="width: 100px;">
+        <col style="width: 100px;">
+        <col style="width: 100px;">
+        <col style="width: 100px;">
+        <col style="width: 400px;">
+        <col style="width: 100px;">
+        <col style="width: 100px;">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>ARRIVAL</th>
+          <th>HOMEWORK</th>
+          <th>CLASSWORK</th>
+          <th>LISTENING CALCULATION</th>
+          <th>NUMBER ACTIVITY</th>
+          <th>BEHAVIOUR</th>
+          <th>Final Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        </tbody>
+    </table>
+    
+    <div id="globalUpdateContainer">
+        <div id="globalUpdatePanel">
+            <h3>Change for All Rows</h3>
+            <div class="global-control">
+                <label for="global-col-0">ARRIVAL:</label>
+                <input type="number" id="global-col-0" value="5" />
+                <button onclick="applyGlobalUpdate(0)">Apply</button>
+            </div>
+            <div class="global-control">
+                <label for="global-col-1">HOMEWORK:</label>
+                <input type="number" id="global-col-1" value="5" />
+                <button onclick="applyGlobalUpdate(1)">Apply</button>
+            </div>
+            <div class="global-control">
+                <label for="global-col-2">CLASSWORK:</label>
+                <input type="number" id="global-col-2" value="5" />
+                <button onclick="applyGlobalUpdate(2)">Apply</button>
+            </div>
+            <div class="global-control">
+                <label for="global-col-3">LISTENING CALCULATION:</label>
+                <input type="number" id="global-col-3" value="5" />
+                <button onclick="applyGlobalUpdate(3)">Apply</button>
+            </div>
+            <div class="global-control">
+                <label for="global-col-4">NUMBER ACTIVITY:</label>
+                <input type="number" id="global-col-4" value="5" />
+                <button onclick="applyGlobalUpdate(4)">Apply</button>
+            </div>
+            <div class="global-control">
+                <label for="global-col-5">BEHAVIOUR:</label>
+                <input type="number" id="global-col-5" value="-5" />
+                <button onclick="applyGlobalUpdate(5)">Apply</button>
+            </div>
+        </div>
+
+        <div id="studentStatusPanel">
+            <h3>Student Status</h3>
+            </div>
+    </div>
+
+    <div id="shareLoadPanel">
+        <h3>Share & Load Data</h3>
+        <textarea id="shareCodeTextarea" placeholder="Generated code will appear here, or paste code to load..."></textarea>
+        <div class="button-group">
+            <button onclick="generateShareCode()">Generate Code</button>
+            <button onclick="copyShareCode()">Copy Code</button>
+            <button onclick="loadFromShareCode()">Load from Code</button>
+        </div>
+    </div>
+    
+    <div id="lessonTabs"></div>
+    
+    <button id="clearSaves" onclick="clearAllSaves()">Clear All Saves</button>
+  </div>
+  
+  <div id="rankingPage">
+    <h2>Student Rankings</h2>
+    <div class="ranking-controls">
+      <button onclick="displayRanking('Saturday')">Saturday Class Ranking</button>
+      <button onclick="displayRanking('Tuesday')">Tuesday Class Ranking</button>
+      <button class="back-button" onclick="closeRankingPage()">Back to Home</button>
+    </div>
+    <div id="rankingResults">
+      <p>Select a class to view rankings.</p>
+      </div>
+  </div>
+
+
+  <div id="reportModal">
+    <div class="modal-content" id="reportContent">
+      <button class="close-btn" onclick="closeReport()">×</button>
+      </div>
+  </div>
+
+  <div id="messageModal">
+    <div class="modal-content">
+      <h2 id="messageTitle"></h2>
+      <p id="messageText"></p>
+      <div class="modal-buttons">
+        <button class="message-ok" onclick="closeMessage()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmModal">
+    <div class="modal-content">
+      <h2 id="confirmTitle"></h2>
+      <p id="confirmText"></p>
+      <div class="modal-buttons">
+        <button class="confirm-yes" id="confirmYes">Yes</button>
+        <button class="confirm-no" id="confirmNo">No</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Global default points mapping (Indices: 0=ARRIVAL, 1=HOMEWORK, 2=CLASSWORK, 3=LISTENING CALCULATION, 4=NUMBER ACTIVITY, 5=BEHAVIOUR)
+    let defaultPointsMapping = [5, 5, 5, 5, 5, -5];
+    
+    // Fixed student lists for different days
+    const defaultStudents = ["Min", "Joanne", "Adhav", "Hevin"];
+    const tuesdayStudents = ["Min", "Joanne", "Adhav", "Hevin", "Nila", "Tara", "Yaseen"];
+    const saturdayStudents = ["Dhriti", "Indu", "Adhav", "Ashwika", "Marium", "Jesicca", "Anglea", "Marianna"];
+
+    // This will hold the currently displayed student list and their absent status
+    let currentStudentsData = []; // Array of { name: "StudentName", isAbsent: false }
+
+    // Helper to get the current day of the week (0-Sunday, 1-Monday, ..., 6-Saturday)
+    function getDayOfWeek(dateString) {
+        const dateObj = new Date(dateString + 'T00:00:00'); // Add 'T00:00:00' for consistent local time interpretation
+        return dateObj.getDay();
+    }
+
+    // Initialize currentStudentsData based on a provided student list
+    function initializeCurrentStudentsData(studentNames) {
+        currentStudentsData = studentNames.map(name => ({ name: name, isAbsent: false }));
+    }
+
+    // Updates the main points table based on currentStudentsData
+    function updateTable() {
+      const tbody = document.querySelector("#pointsTable tbody");
+      tbody.innerHTML = "";
+      
+      currentStudentsData.forEach(studentData => {
+        const studentName = studentData.name;
+        const tr = document.createElement("tr");
+        tr.dataset.studentName = studentName; // Add data attribute for easy lookup
+        
+        // Apply absent class if student is marked absent
+        if (studentData.isAbsent) {
+            tr.classList.add('absent-row');
+        }
+
+        // Student Name cell with hover and click event for report.
+        const nameTd = document.createElement("td");
+        nameTd.textContent = studentName;
+        nameTd.addEventListener("click", function() {
+          openReport(this);
+        });
+        tr.appendChild(nameTd);
+        
+        // Create cells for scoring columns (indices 0 to 5)
+        defaultPointsMapping.forEach((defaultVal, index) => {
+          const td = document.createElement("td");
+          const cellContainer = document.createElement("div");
+          cellContainer.className = "cell-container";
+          
+          if (index === 4) { // NUMBER ACTIVITY column
+            const horizontalContainer = document.createElement("div");
+            horizontalContainer.className = "numact-cell";
+            
+            // Left: free text input.
+            const textInput = document.createElement("input");
+            textInput.type = "text";
+            textInput.className = "numact-text custom-text";
+            textInput.placeholder = "Text";
+            textInput.disabled = studentData.isAbsent; // Disable if absent
+            horizontalContainer.appendChild(textInput);
+            
+            // Right: vertical container for numeric controls.
+            const numericContainer = document.createElement("div");
+            numericContainer.className = "numact-number-container";
+            
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.classList.add("custom-checkbox");
+            checkbox.dataset.points = defaultVal;
+            checkbox.dataset.index = index;
+            checkbox.onchange = function() { recalcRow(this.closest("tr")); };
+            checkbox.disabled = studentData.isAbsent; // Disable if absent
+            numericContainer.appendChild(checkbox);
+            
+            const customizer = document.createElement("div");
+            customizer.className = "cell-customizer";
+            
+            const minusBtn = document.createElement("button");
+            minusBtn.type = "button";
+            minusBtn.textContent = "−";
+            minusBtn.onclick = function() { decrementCell(this); };
+            minusBtn.disabled = studentData.isAbsent; // Disable if absent
+            
+            const cellValueInput = document.createElement("input");
+            cellValueInput.type = "number";
+            cellValueInput.className = "cell-value-input custom-input";
+            cellValueInput.value = defaultVal;
+            cellValueInput.onchange = function() {
+              const newVal = parseInt(this.value, 10);
+              checkbox.dataset.points = newVal;
+              recalcAll();
+            };
+            cellValueInput.disabled = studentData.isAbsent; // Disable if absent
+            
+            const plusBtn = document.createElement("button");
+            plusBtn.type = "button";
+            plusBtn.textContent = "+";
+            plusBtn.onclick = function() { incrementCell(this); };
+            plusBtn.disabled = studentData.isAbsent; // Disable if absent
+            
+            customizer.appendChild(minusBtn);
+            customizer.appendChild(cellValueInput);
+            customizer.appendChild(plusBtn);
+            numericContainer.appendChild(customizer);
+            horizontalContainer.appendChild(numericContainer);
+            cellContainer.appendChild(horizontalContainer);
+          } else {
+            // For other columns: standard layout.
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.classList.add("custom-checkbox");
+            checkbox.dataset.points = defaultVal;
+            checkbox.dataset.index = index;
+            checkbox.onchange = function() { recalcRow(this.closest("tr")); };
+            checkbox.disabled = studentData.isAbsent; // Disable if absent
+            cellContainer.appendChild(checkbox);
+            
+            const customizer = document.createElement("div");
+            customizer.className = "cell-customizer";
+            
+            const minusBtn = document.createElement("button");
+            minusBtn.type = "button";
+            minusBtn.textContent = "−";
+            minusBtn.onclick = function() { decrementCell(this); };
+            minusBtn.disabled = studentData.isAbsent; // Disable if absent
+            
+            const cellValueInput = document.createElement("input");
+            cellValueInput.type = "number";
+            cellValueInput.className = "cell-value-input custom-input";
+            cellValueInput.value = defaultVal;
+            cellValueInput.onchange = function() {
+              const newVal = parseInt(this.value, 10);
+              checkbox.dataset.points = newVal;
+              recalcAll();
+            };
+            cellValueInput.disabled = studentData.isAbsent; // Disable if absent
+            
+            const plusBtn = document.createElement("button");
+            plusBtn.type = "button";
+            plusBtn.textContent = "+";
+            plusBtn.onclick = function() { incrementCell(this); };
+            plusBtn.disabled = studentData.isAbsent; // Disable if absent
+            
+            customizer.appendChild(minusBtn);
+            customizer.appendChild(cellValueInput);
+            customizer.appendChild(plusBtn);
+            cellContainer.appendChild(customizer);
+          }
+          td.appendChild(cellContainer);
+          tr.appendChild(td);
+        });
+        
+        // Final Score cell.
+        const scoreTd = document.createElement("td");
+        scoreTd.className = "final-score";
+        scoreTd.textContent = studentData.isAbsent ? "0" : "0"; // Set to 0 if absent initially
+        tr.appendChild(scoreTd);
+        
+        tbody.appendChild(tr);
+      });
+      updateStudentStatusPanel(); // Also update the new status panel
+    }
+    
+    // Updates the Student Status Panel
+    function updateStudentStatusPanel() {
+        const panel = document.getElementById('studentStatusPanel');
+        panel.innerHTML = '<h3>Student Status</h3>'; // Reset title
+
+        currentStudentsData.forEach(student => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'student-status-item';
+
+            const studentNameSpan = document.createElement('span');
+            studentNameSpan.textContent = student.name;
+            itemDiv.appendChild(studentNameSpan);
+
+            const absentButton = document.createElement('button');
+            absentButton.textContent = student.isAbsent ? 'Present' : 'Absent';
+            absentButton.classList.toggle('absent', student.isAbsent); // Add 'absent' class if student is absent
+            absentButton.onclick = () => toggleAbsent(student.name); // Call toggle function
+
+            itemDiv.appendChild(absentButton);
+            panel.appendChild(itemDiv);
+        });
+    }
+
+    // Toggles the absent status for a student
+    function toggleAbsent(studentName) {
+        const studentIndex = currentStudentsData.findIndex(s => s.name === studentName);
+        if (studentIndex === -1) return;
+
+        currentStudentsData[studentIndex].isAbsent = !currentStudentsData[studentIndex].isAbsent;
+        
+        const tr = document.querySelector(`tr[data-student-name="${studentName}"]`);
+        if (tr) {
+            tr.classList.toggle('absent-row', currentStudentsData[studentIndex].isAbsent);
+            
+            // Enable/Disable inputs and checkboxes in the row
+            const inputs = tr.querySelectorAll('input');
+            const buttons = tr.querySelectorAll('button');
+            inputs.forEach(input => input.disabled = currentStudentsData[studentIndex].isAbsent);
+            buttons.forEach(button => button.disabled = currentStudentsData[studentIndex].isAbsent);
+
+            // If marking absent, uncheck all and set score to 0
+            if (currentStudentsData[studentIndex].isAbsent) {
+                const checkboxes = tr.querySelectorAll("input[type='checkbox']");
+                checkboxes.forEach(chk => chk.checked = false); // Uncheck all
+                updateFinalScoreCell(tr, 0); // Set final score to 0
+            } else {
+                recalcRow(tr); // Recalculate if becoming present
+            }
+        }
+        updateStudentStatusPanel(); // Update the button text in the status panel
+    }
+    
+    // Recalculate a row's final score.
+    function recalcRow(trOrElement) {
+      const tr = (trOrElement.tagName === "TR") ? trOrElement : trOrElement.closest("tr");
+      const studentName = tr.dataset.studentName;
+      const studentData = currentStudentsData.find(s => s.name === studentName);
+
+      if (studentData && studentData.isAbsent) {
+          updateFinalScoreCell(tr, 0); // If absent, score is 0
+          return;
+      }
+
+      let score = 0;
+      const checkboxes = tr.querySelectorAll("input[type='checkbox']");
+      checkboxes.forEach(chk => {
+        if (chk.checked) {
+          score += parseInt(chk.dataset.points, 10);
+        }
+      });
+      updateFinalScoreCell(tr, score);
+    }
+    
+    // Update final score cell.
+    function updateFinalScoreCell(tr, score) {
+      const scoreTd = tr.querySelector(".final-score");
+      scoreTd.textContent = score;
+    }
+    
+    function recalcAll() {
+      const rows = document.querySelectorAll("#pointsTable tbody tr");
+      rows.forEach(tr => recalcRow(tr));
+    }
+    
+    function incrementCell(button) {
+      const container = button.parentElement.parentElement;
+      const checkbox = container.querySelector("input[type='checkbox']");
+      let currentVal = parseInt(checkbox.dataset.points, 10);
+      currentVal++;
+      checkbox.dataset.points = currentVal;
+      const inputField = container.querySelector("input.cell-value-input");
+      if (inputField) { inputField.value = currentVal; }
+      recalcAll();
+    }
+    
+    function decrementCell(button) {
+      const container = button.parentElement.parentElement;
+      const checkbox = container.querySelector("input[type='checkbox']");
+      let currentVal = parseInt(checkbox.dataset.points, 10);
+      currentVal--;
+      checkbox.dataset.points = currentVal;
+      const inputField = container.querySelector("input.cell-value-input");
+      if (inputField) { inputField.value = currentVal; }
+      recalcAll();
+    }
+    
+    function drawAbacus(score) {
+      // (Optional: For abacus display mode – not currently used)
+      const container = document.createElement("div");
+      container.className = "abacus-display";
+      if (score < 0) {
+        const minus = document.createElement("span");
+        minus.textContent = "-";
+        minus.style.fontSize = "2rem";
+        minus.style.marginRight = "5px";
+        container.appendChild(minus);
+      }
+      const absScore = Math.abs(score);
+      let digits = absScore.toString();
+      if (digits === "") { digits = "0"; }
+      for (const char of digits) {
+        const digit = parseInt(char, 10);
+        container.appendChild(createAbacusColumn(digit));
+      }
+      return container;
+    }
+    
+    function createAbacusColumn(digit) {
+      const column = document.createElement("div");
+      column.className = "abacus-column";
+      const rod = document.createElement("div");
+      rod.className = "abacus-rod";
+      column.appendChild(rod);
+      const upper = document.createElement("div");
+      upper.className = "abacus-upper";
+      const upperBead = document.createElement("div");
+      upperBead.className = "abacus-bead upper-bead";
+      if (digit >= 5) {
+        upperBead.classList.add("active");
+      } else {
+        upperBead.classList.add("inactive");
+      }
+      upper.appendChild(upperBead);
+      column.appendChild(upper);
+      const lower = document.createElement("div");
+      lower.className = "abacus-lower";
+      const lowerActive = (digit >= 5) ? digit - 5 : digit;
+      for (let i = 0; i < 4; i++) {
+        const containerDiv = document.createElement("div");
+        containerDiv.className = "lower-bead-container";
+        const lowerBead = document.createElement("div");
+        lowerBead.className = "abacus-bead lower-bead";
+        if (i < lowerActive) {
+          lowerBead.classList.add("active");
+        } else {
+          lowerBead.classList.add("inactive");
+        }
+        containerDiv.appendChild(lowerBead);
+        lower.appendChild(containerDiv);
+      }
+      column.appendChild(lower);
+      return column;
+    }
+    
+    // ---- Report Modal Functions ----
+    function openReport(nameCell) {
+      // Get the row of the clicked student name.
+      const tr = nameCell.parentElement;
+      const studentName = nameCell.textContent;
+      const studentData = currentStudentsData.find(s => s.name === studentName);
+      
+      // Get current lesson date (or "unspecified" if not set)
+      let lessonDate = document.getElementById("lessonDate").value;
+      if (!lessonDate) {
+        lessonDate = "Unspecified";
+      }
+      
+      let reportHtml = `<h2>Report for ${studentName}</h2>`;
+      reportHtml += `<p>Lesson Date: ${lessonDate}</p>`;
+
+      if (studentData && studentData.isAbsent) {
+          reportHtml += `<p style="font-weight: bold; color: #e53935; font-size: 1.2rem;">Absent</p>`;
+      } else {
+          reportHtml += `<table class="report-table"><thead><tr>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Value</th>
+                            <th>Notes</th>
+                            </tr></thead><tbody>`;
+          // Define the column names for data cells (indices 0 to 5 for our scoring data).
+          const columns = ["ARRIVAL", "HOMEWORK", "CLASSWORK", "LISTENING CALCULATION", "NUMBER ACTIVITY", "BEHAVIOUR"];
+          
+          // Loop through cells 1 to 6 of the row.
+          for (let i = 1; i <= 6; i++) {
+            const cell = tr.cells[i];
+            let status = "", value = "", notes = "";
+            if (i === 5) {
+              // NUMBER ACTIVITY column: retrieve text, checkbox, and numeric value.
+              const textInput = cell.querySelector("input.numact-text") || { value: "" };
+              const numericContainer = cell.querySelector("div.numact-number-container");
+              const checkbox = numericContainer ? numericContainer.querySelector("input[type='checkbox']") : { checked: false };
+              const cellValueInput = numericContainer ? numericContainer.querySelector("input.cell-value-input") : { value: "" };
+              status = checkbox.checked ? "Checked" : "Unchecked";
+              value = cellValueInput.value;
+              notes = textInput.value;
+            } else {
+              // Other columns: retrieve checkbox and value.
+              const checkbox = cell.querySelector("input[type='checkbox']");
+              const cellValueInput = cell.querySelector("input.cell-value-input");
+              status = checkbox && checkbox.checked ? "Checked" : "Unchecked";
+              value = cellValueInput ? cellValueInput.value : "";
+              notes = "";
+            }
+            reportHtml += `<tr>
+                              <td>${columns[i-1]}</td>
+                              <td>${status}</td>
+                              <td>${value}</td>
+                            <td>${notes}</td>
+                            </tr>`;
+          }
+          reportHtml += `</tbody></table>`;
+      }
+      
+      // Insert the report HTML into the modal.
+      document.getElementById("reportContent").innerHTML = `<button class="close-btn" onclick="closeReport()">×</button>` + reportHtml;
+      
+      // Show the modal.
+      document.getElementById("reportModal").classList.add("show");
+    }
+    
+    function closeReport() {
+      document.getElementById("reportModal").classList.remove("show");
+    }
+
+    // ---- Custom Message Modal Functions (replaces alert) ----
+    let messageCallback = null; // Callback for when message modal is closed
+
+    function showMessage(title, message, callback = null) {
+      document.getElementById("messageTitle").textContent = title;
+      document.getElementById("messageText").textContent = message;
+      messageCallback = callback; // Store the callback
+      document.getElementById("messageModal").classList.add("show");
+    }
+
+    function closeMessage() {
+      document.getElementById("messageModal").classList.remove("show");
+      if (messageCallback) {
+        messageCallback(); // Execute callback if it exists
+        messageCallback = null; // Clear the callback
+      }
+    }
+
+    // ---- Custom Confirmation Modal Functions (replaces confirm) ----
+    let confirmResolver = null; // Resolver for the confirmation Promise
+
+    function showConfirm(title, message) {
+      return new Promise((resolve) => {
+        document.getElementById("confirmTitle").textContent = title;
+        document.getElementById("confirmText").textContent = message;
+        document.getElementById("confirmModal").classList.add("show");
+        confirmResolver = resolve;
+
+        // Event listeners for Yes/No buttons
+        document.getElementById("confirmYes").onclick = () => {
+          document.getElementById("confirmModal").classList.remove("show");
+          confirmResolver(true);
+          confirmResolver = null;
+        };
+        document.getElementById("confirmNo").onclick = () => {
+          document.getElementById("confirmModal").classList.remove("show");
+          confirmResolver(false);
+          confirmResolver = null;
+        };
+      });
+    }
+    
+    // ---- Lesson Saving System ----
+    function getLessonDataForSave() { // Renamed to avoid confusion with getLessonData for share code
+      const data = [];
+      const rows = document.querySelectorAll("#pointsTable tbody tr");
+      rows.forEach(tr => {
+        const studentName = tr.cells[0].textContent;
+        const studentRecord = currentStudentsData.find(s => s.name === studentName);
+        const isAbsent = studentRecord ? studentRecord.isAbsent : false;
+
+        const rowData = { student: studentName, cells: [], isAbsent: isAbsent }; // Added isAbsent
+        
+        // Save data from cells 1 to 6.
+        for (let col = 1; col <= 6; col++) {
+          const cell = tr.cells[col];
+          let cellData = {};
+          if (col === 5) {  // NUMBER ACTIVITY column
+            const textInput = cell.querySelector("input.numact-text");
+            const numericContainer = cell.querySelector("div.numact-number-container");
+            const checkbox = numericContainer.querySelector("input[type='checkbox']");
+            const valueInput = numericContainer.querySelector("input.cell-value-input");
+            cellData = {
+              text: textInput.value,
+              checkbox: checkbox.checked,
+              value: parseInt(valueInput.value, 10)
+            };
+          } else {
+            const checkbox = cell.querySelector("input[type='checkbox']");
+            const valueInput = cell.querySelector("input.cell-value-input");
+            cellData = {
+              checkbox: checkbox.checked,
+              value: parseInt(valueInput.value, 10)
+            };
+          }
+          rowData.cells.push(cellData);
+        }
+        // Calculate the current row's final score directly from the table
+        const scoreTd = tr.querySelector(".final-score");
+        rowData.finalScore = parseInt(scoreTd.textContent, 10); // Store final score for ranking
+        data.push(rowData);
+      });
+      // Store the names of the students currently in the table, to reconstruct on load
+      const studentNamesOnly = currentStudentsData.map(s => s.name); 
+      return { students: studentNamesOnly, rows: data }; // Store student names and their data
+    }
+    
+    async function saveLesson(event) {
+      event.preventDefault();
+      const lessonDate = document.getElementById("lessonDate").value;
+      if (!lessonDate) {
+        showMessage("Error", "Please select a lesson date.");
+        return;
+      }
+      const lessonData = getLessonDataForSave(); 
+      const lesson = { date: lessonDate, studentList: lessonData.students, rows: lessonData.rows };
+
+      let lessons = JSON.parse(localStorage.getItem("lessons")) || [];
+      const existingIndex = lessons.findIndex(l => l.date === lessonDate);
+      if (existingIndex >= 0) {
+        lessons[existingIndex] = lesson;
+      } else {
+        lessons.push(lesson);
+      }
+      localStorage.setItem("lessons", JSON.stringify(lessons));
+      updateLessonTabs();
+      showMessage("Success", "Lesson saved!");
+    }
+    
+    document.getElementById("lessonForm").addEventListener("submit", saveLesson);
+    
+    // When the lesson date changes, load the lesson if it exists; otherwise update based on day of week.
+    document.getElementById("lessonDate").addEventListener("change", function() {
+      const lessonDate = this.value; 
+      if (!lessonDate) {
+        // If date is cleared, revert to default students
+        initializeCurrentStudentsData(defaultStudents);
+        updateTable();
+        recalcAll();
+        updateLessonTabs(); // Clear active tab
+        return;
+      }
+
+      let lessons = JSON.parse(localStorage.getItem("lessons")) || [];
+      const existingLesson = lessons.find(l => l.date === lessonDate);
+
+      if (existingLesson) {
+        loadLesson(existingLesson); // Load the found lesson object
+      } else {
+        // No saved lesson for this date, so determine students based on day of week
+        const dayOfWeek = getDayOfWeek(lessonDate); 
+
+        let newStudentNames = [...defaultStudents];
+        let message = "Switched to default student list for this day.";
+
+        if (dayOfWeek === 2) { // Tuesday
+          newStudentNames = [...tuesdayStudents];
+          message = "Automatically switched to Tuesday student list.";
+        } else if (dayOfWeek === 6) { // Saturday
+          newStudentNames = [...saturdayStudents];
+          message = "Automatically switched to Saturday student list.";
+        } 
+        
+        initializeCurrentStudentsData(newStudentNames); // Reset student data for the new day
+        updateTable(); // Rebuild the table with the determined student list
+        recalcAll(); // Recalculate scores for the new table
+        updateLessonTabs(); // Update tabs, remove any active tab since it's a new date without save
+        showMessage("Student List Updated", message);
+      }
+    });
+    
+    function updateLessonTabs() {
+      const lessonTabsDiv = document.getElementById("lessonTabs");
+      lessonTabsDiv.innerHTML = "";
+      let lessons = JSON.parse(localStorage.getItem("lessons")) || [];
+      // Sort lessons by date in descending order (most recent first)
+      lessons.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      lessons.forEach((lesson) => { // No need for index 'i' here
+        const tab = document.createElement("div");
+        tab.className = "lesson-tab";
+        tab.textContent = lesson.date;
+        tab.onclick = function() { loadLesson(lesson); }; // Pass the full lesson object
+        lessonTabsDiv.appendChild(tab);
+      });
+      // Set the active tab if a date is currently selected in the input
+      const currentSelectedDate = document.getElementById("lessonDate").value;
+      if (currentSelectedDate) {
+        const tabs = document.getElementsByClassName("lesson-tab");
+        Array.from(tabs).forEach(tab => {
+          if (tab.textContent === currentSelectedDate) {
+            tab.classList.add("active");
+          } else {
+            tab.classList.remove("active");
+          }
+        });
+      }
+    }
+    
+    // Centralized function to load a lesson state (from localStorage or share code)
+    function loadLesson(lesson) {
+      if (!lesson || !lesson.date || !lesson.studentList || !lesson.rows) {
+        showMessage("Error", "Invalid lesson data provided.");
+        return;
+      }
+
+      // Re-initialize currentStudentsData from the provided lesson's studentList
+      currentStudentsData = lesson.studentList.map(name => {
+          const savedStudentData = lesson.rows.find(row => row.student === name);
+          return {
+              name: name,
+              isAbsent: savedStudentData ? savedStudentData.isAbsent : false
+          };
+      });
+
+      updateTable(); // Rebuild the table with the correct student list and initial absent states
+      // Set the date input to the loaded lesson's date
+      document.getElementById("lessonDate").value = lesson.date;
+
+      // Now populate the specific cell data and apply absent status
+      lesson.rows.forEach((rowData) => { 
+        const studentRow = document.querySelector(`tr[data-student-name="${rowData.student}"]`);
+        
+        if(studentRow){ 
+          // Re-apply absent status and related UI changes
+          const studentRecord = currentStudentsData.find(s => s.name === rowData.student);
+          if (studentRecord && rowData.isAbsent) {
+              // Ensure the row is marked absent and inputs disabled/unchecked if it wasn't already from updateTable
+              studentRow.classList.add('absent-row');
+              const inputs = studentRow.querySelectorAll('input');
+              const buttons = studentRow.querySelectorAll('button');
+              inputs.forEach(input => input.disabled = true);
+              buttons.forEach(button => button.disabled = true);
+              const checkboxes = studentRow.querySelectorAll("input[type='checkbox']");
+              checkboxes.forEach(chk => chk.checked = false); // Uncheck all
+              updateFinalScoreCell(studentRow, 0); // Set final score to 0
+          } else {
+              // Only load cell data if not absent (or if being marked present)
+              rowData.cells.forEach((cellData, j) => {
+                const cell = studentRow.cells[j+1]; 
+                if (j === 4) {  // NUMBER ACTIVITY column
+                  const textInput = cell.querySelector("input.numact-text");
+                  const numericContainer = cell.querySelector("div.numact-number-container");
+                  const checkbox = numericContainer.querySelector("input[type='checkbox']");
+                  const valueInput = numericContainer.querySelector("input.cell-value-input");
+                  if (textInput) textInput.value = cellData.text;
+                  if (checkbox) {
+                      checkbox.checked = cellData.checkbox;
+                      checkbox.dataset.points = cellData.value;
+                  }
+                  if (valueInput) valueInput.value = cellData.value;
+                } else {
+                  const checkbox = cell.querySelector("input[type='checkbox']");
+                  const valueInput = cell.querySelector("input.cell-value-input");
+                  if (checkbox) {
+                      checkbox.checked = cellData.checkbox;
+                      checkbox.dataset.points = cellData.value;
+                  }
+                  if (valueInput) valueInput.value = cellData.value;
+                }
+              });
+              recalcRow(studentRow); // Recalculate score for this specific row
+          }
+        }
+      });
+      updateStudentStatusPanel(); // Ensure student status panel is also updated
+      // Update active tab status
+      const tabs = document.getElementsByClassName("lesson-tab");
+      Array.from(tabs).forEach(tab => {
+        if (tab.textContent === lesson.date) {
+          tab.classList.add("active");
+        } else {
+          tab.classList.remove("active");
+        }
+      });
+    }
+
+    // Function to set Tuesday students (called by manual button click)
+    function setTuesday() {
+      initializeCurrentStudentsData(tuesdayStudents); 
+      updateTable(); 
+      recalcAll(); 
+      document.getElementById("lessonDate").value = ""; 
+      updateLessonTabs(); 
+      showMessage("Student List Updated", "Manually switched to Tuesday student list.");
+    }
+
+    // Function to set Saturday students (called by manual button click)
+    function setSaturday() {
+      initializeCurrentStudentsData(saturdayStudents); 
+      updateTable(); 
+      recalcAll(); 
+      document.getElementById("lessonDate").value = ""; 
+      updateLessonTabs(); 
+      showMessage("Student List Updated", "Manually switched to Saturday student list.");
+    }
+    
+    async function clearAllSaves() {
+      const confirmed = await showConfirm("Confirm Deletion", "Are you sure you want to clear all saved lessons? This action cannot be undone.");
+      if (confirmed) {
+        localStorage.removeItem("lessons");
+        updateLessonTabs();
+        initializeCurrentStudentsData(defaultStudents); 
+        updateTable(); 
+        recalcAll(); 
+        showMessage("Success", "All saved lessons cleared.");
+      } else {
+        showMessage("Cancelled", "Clear all saves action cancelled.");
+      }
+    }
+
+    // Function to apply global updates to all checkboxes in a specific column
+    function applyGlobalUpdate(colIndex) {
+      const globalValueInput = document.getElementById(`global-col-${colIndex}`);
+      const newValue = parseInt(globalValueInput.value, 10);
+      if (isNaN(newValue)) {
+        showMessage("Invalid Input", "Please enter a valid number for the global update.");
+        return;
+      }
+
+      const rows = document.querySelectorAll("#pointsTable tbody tr");
+      rows.forEach(tr => {
+        const studentName = tr.dataset.studentName;
+        const studentData = currentStudentsData.find(s => s.name === studentName);
+        
+        // Skip updating absent students
+        if (studentData && studentData.isAbsent) {
+            return; 
+        }
+
+        const targetCell = tr.cells[colIndex + 1];
+        let checkbox = null;
+        let valueInput = null;
+
+        if (colIndex === 4) { 
+          const numericContainer = targetCell.querySelector("div.numact-number-container");
+          if (numericContainer) {
+            checkbox = numericContainer.querySelector("input[type='checkbox']");
+            valueInput = numericContainer.querySelector("input.cell-value-input");
+          }
+        } else {
+          checkbox = targetCell.querySelector("input[type='checkbox']");
+          valueInput = targetCell.querySelector("input.cell-value-input");
+        }
+        
+        if (checkbox && valueInput) {
+          checkbox.dataset.points = newValue;
+          valueInput.value = newValue;
+        }
+      });
+      recalcAll(); 
+      showMessage("Update Applied", `Global update applied to column ${colIndex + 1}.`);
+    }
+
+    // New: Function to generate a shareable code
+    function generateShareCode() {
+        const lessonDate = document.getElementById("lessonDate").value;
+        if (!lessonDate) {
+            showMessage("Error", "Please select a lesson date before generating code.");
+            return;
+        }
+        const currentLessonState = getLessonDataForSave(); // Get the full current state
+        const fullState = { date: lessonDate, studentList: currentLessonState.students, rows: currentLessonState.rows };
+        
+        try {
+            const jsonString = JSON.stringify(fullState);
+            const encodedString = btoa(jsonString); // Base64 encode
+            const shareCodeTextarea = document.getElementById("shareCodeTextarea");
+            shareCodeTextarea.value = encodedString;
+            showMessage("Code Generated", "Shareable code generated successfully!");
+            shareCodeTextarea.focus(); // Focus the textarea
+            shareCodeTextarea.select(); // Select the text for easy copying
+        } catch (error) {
+            showMessage("Error", "Failed to generate code: " + error.message);
+            console.error("Generate code error:", error);
+        }
+    }
+
+    // New: Function to copy shareable code to clipboard
+    function copyShareCode() {
+        const shareCodeTextarea = document.getElementById("shareCodeTextarea");
+        if (shareCodeTextarea.value) {
+            shareCodeTextarea.select();
+            document.execCommand('copy');
+            showMessage("Copied!", "Code copied to clipboard.");
+        } else {
+            showMessage("No Code", "Generate a code first before attempting to copy.");
+        }
+    }
+
+    // New: Function to load from a shareable code
+    function loadFromShareCode() {
+        const encodedString = document.getElementById("shareCodeTextarea").value.trim();
+        if (!encodedString) {
+            showMessage("Error", "Please paste a code into the text area to load.");
+            return;
+        }
+
+        try {
+            const decodedString = atob(encodedString); // Base64 decode
+            const loadedLesson = JSON.parse(decodedString); // Parse JSON
+
+            if (!loadedLesson || !loadedLesson.date || !loadedLesson.studentList || !loadedLesson.rows) {
+                showMessage("Error", "Invalid code format. Please paste a valid generated code.");
+                return;
+            }
+
+            // Load the lesson using the central loadLesson function
+            loadLesson(loadedLesson);
+            showMessage("Success", `Lesson loaded from code for date: ${loadedLesson.date}.`);
+        } catch (error) {
+            showMessage("Error", "Failed to load code. Ensure it is a valid generated code. Error: " + error.message);
+            console.error("Load code error:", error);
+        }
+    }
+
+    // --- Ranking Page Functions ---
+    function openRankingPage() {
+        document.getElementById("mainContent").style.display = "none";
+        document.getElementById("rankingPage").style.display = "block";
+        document.getElementById("rankingResults").innerHTML = '<p>Select a class to view rankings.</p>'; // Clear previous results
+    }
+
+    function closeRankingPage() {
+        document.getElementById("mainContent").style.display = "block";
+        document.getElementById("rankingPage").style.display = "none";
+    }
+
+    function calculateRanking(classType) {
+        let allLessons = JSON.parse(localStorage.getItem("lessons")) || [];
+        let totalScores = {};
+
+        allLessons.forEach(lesson => {
+            const dayOfWeek = getDayOfWeek(lesson.date); // 0=Sun, 1=Mon, ..., 6=Sat
+
+            // Filter lessons by class type
+            if ((classType === 'Saturday' && dayOfWeek === 6) ||
+                (classType === 'Tuesday' && dayOfWeek === 2)) {
+                
+                lesson.rows.forEach(studentRow => {
+                    // Only count points for students who were present
+                    // Use the finalScore from the saved lesson data
+                    if (!studentRow.isAbsent && studentRow.finalScore !== undefined) { 
+                        const studentName = studentRow.student;
+                        const finalScore = studentRow.finalScore;
+                        
+                        if (totalScores[studentName]) {
+                            totalScores[studentName] += finalScore;
+                        } else {
+                            totalScores[studentName] = finalScore;
+                        }
+                    }
+                });
+            }
+        });
+
+        // Convert to an array of { student: name, totalPoints: score } objects
+        let ranking = Object.keys(totalScores).map(name => ({
+            student: name,
+            totalPoints: totalScores[name]
+        }));
+
+        // Sort by total points in descending order
+        ranking.sort((a, b) => b.totalPoints - a.totalPoints);
+
+        return ranking;
+    }
+
+    function displayRanking(classType) {
+        const rankingResultsDiv = document.getElementById("rankingResults");
+        const ranking = calculateRanking(classType);
+
+        let rankingHtml = `<h3>${classType} Class Ranking</h3>`;
+
+        if (ranking.length === 0) {
+            rankingHtml += `<p>No data available for ${classType} class rankings yet.</p>`;
+        } else {
+            rankingHtml += `<table class="ranking-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Student Name</th>
+                                        <th>Total Points</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+            ranking.forEach((entry, index) => {
+                rankingHtml += `<tr>
+                                    <td>${index + 1}</td>
+                                    <td>${entry.student}</td>
+                                    <td>${entry.totalPoints}</td>
+                                </tr>`;
+            });
+            rankingHtml += `</tbody></table>`;
+        }
+        rankingResultsDiv.innerHTML = rankingHtml;
+    }
+    
+    document.addEventListener("DOMContentLoaded", () => {
+      // Initialize with default students on page load
+      initializeCurrentStudentsData(defaultStudents);
+      updateTable(); 
+      updateLessonTabs();
+    });
+  </script>
+</body>
+</html>
